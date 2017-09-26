@@ -80,7 +80,7 @@ int process(string inputfile) {
 		wstringstream wsstemp;
 		vector<Per> stc;
 		unordered_set<size_t> slocs;
-		vector<size_t> vorder;
+		unordered_set<size_t> sorder;
 		for (size_t i = 1; i < line.size(); ++i) {
 			wsstemp.str(L"");
 			wsstemp << line[i - 1];
@@ -97,14 +97,21 @@ int process(string inputfile) {
 					stc[i] = ptemp;
 				}
 		//¸ÅÂÊÅÅÐò
-		for (size_t i = 0; i < stc.size(); ++i) 
+		for (size_t i = 0; i < stc.size(); ++i)
 			if (slocs.find(stc[i].loc) == slocs.end() && slocs.find(stc[i].loc - 1) == slocs.end()) {
 				slocs.emplace(stc[i].loc);
 				slocs.emplace(stc[i].loc - 1);
-				vorder.push_back(stc[i].loc);
+				sorder.emplace(stc[i].loc);
 			}
 		//¶ÌÓïÅÅÐò
-
+		for (size_t i = 0; i < line.size() - 1; ++i) {
+			if (sorder.find(i + 1) == sorder.end())
+				wcout << line[i] << L" ";
+			else {
+				wcout << line[i] << line[i + 1] << L" ";
+				++i;
+			}
+		}
 	}
 	return 0;
 }
