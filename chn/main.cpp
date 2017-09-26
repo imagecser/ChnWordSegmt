@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <locale>
+#include <map>
 #include <ctime>
 using namespace std;
 
@@ -76,7 +77,6 @@ int process(string inputfile) {
 	wss.str(L"");
 	wss << input;
 	while (wss >> line) { //±È¿˙æ‰∂Œ
-		wcout << line << endl;
 		wstringstream wsstemp;
 		vector<Per> stc;
 		unordered_set<size_t> slocs;
@@ -104,7 +104,7 @@ int process(string inputfile) {
 				sorder.emplace(stc[i].loc);
 			}
 		//∂Ã”Ô≈≈–Ú
-		for (size_t i = 0; i < line.size() - 1; ++i) {
+		for (size_t i = 0; i < line.size(); ++i) {
 			if (sorder.find(i + 1) == sorder.end())
 				wcout << line[i] << L" ";
 			else {
