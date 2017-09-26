@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <locale>
 #include <map>
@@ -17,7 +18,7 @@ struct Parent {
 
 struct Per {
 	size_t loc;
-	double prob;
+	float prob;
 };
 
 unordered_map<wchar_t, Parent> maps;
@@ -43,8 +44,22 @@ locale chn("chs");
 int travelsal(string train_file) {
 	wfstream fio(train_file);
 	fio.imbue(chn);
+	fio.seekg(0, ios::end);
+	streampos ps = fio.tellg();
+	fio.seekg(0, ios::beg);
+	time_t start = time(NULL);
+	time_t end = time(NULL), temp = start;
 	wstring input;
+	float perc = 0;
 	while (fio >> input) {
+		streampos pstemp = fio.tellg();
+		end = time(NULL);
+		float perh = (float)pstemp / ps * 100;
+		if (end - temp > 0 || perh - perc > 0.9999) {
+			temp = end;
+			perc = perh;
+			cout << flush << '\r' << "[" << string((int)(perh * 4 / 5), '#') << string(80 - (int)(perh * 4 / 5), ' ') << "] " << pstemp << "/" << ps << "  " << setprecision(3) <<  perh << "%   " << end - start << "s   ";
+		}
 		for (auto &ch : input)
 			if (invalid_character.find(ch) != invalid_character.end())
 				ch = L' ';
@@ -63,6 +78,9 @@ int travelsal(string train_file) {
 				par.key[wstemp]++;
 		}
 	}
+	fio.close();
+	cout << flush << '\r' << "[" << string(80, '#') << "] " << ps << "/" << ps << "  100%   " << end - start << "s   ";
+	cout << endl;
 	return 0;
 }
 
@@ -84,9 +102,9 @@ int process(string inputfile) {
 		for (size_t i = 1; i < line.size(); ++i) {
 			wsstemp.str(L"");
 			wsstemp << line[i - 1];
-			double son = maps[line[i]].key[wsstemp.str()];
-			double mo = maps[line[i]].sum;
-			stc.push_back({ i, son / mo });
+			float son = (float)maps[line[i]].key[wsstemp.str()];
+			float mo = (float)maps[line[i]].sum;
+			stc.push_back({ i, son == 0 ? 0 : son / mo * log10f(mo)});
 		}
 		//Â¼Èë¸ÅÂÊ
 		for (size_t i = 0; i < stc.size(); ++i)
@@ -113,6 +131,7 @@ int process(string inputfile) {
 			}
 		}
 	}
+	cout << endl;
 	return 0;
 }
 
@@ -185,11 +204,16 @@ int twidec() {
 	return 0;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
-	string filename("sc.txt");
-	travelsal(filename);
-	process("test.txt");
-	//twidec();
+	//if (argc <= 2) {
+	//	travelsal("yd.txt");
+	//	process("test.txt");
+	//	//twidec();
+	//} else	
+	
+		travelsal(argv[1]);
+		process(argv[2]);
+	
 	return 0;
 }
