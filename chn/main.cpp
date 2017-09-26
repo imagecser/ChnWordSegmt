@@ -1,4 +1,5 @@
 #include <unordered_set>
+#include <unordered_map>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,7 +8,98 @@
 #include <locale>
 #include <ctime>
 using namespace std;
-int main() {
+
+struct Parent {
+	unordered_map<wstring, int> key;
+	int sum;
+};
+
+struct Per {
+	size_t loc;
+	double prob;
+};
+
+unordered_map<wchar_t, Parent> maps;
+unordered_set<wchar_t> invalid_character = {
+L'.', L',', L'!', L'@', L'#', L'$', L'%', L'^',
+L'&', L'*', L'(', L')', L'-', L'_', L'=', L'+',
+L'<', L'>', L'/', L'"', L';', L':', L'，', L'。',
+L'《', L'》', L'？', L'、', L'：', L'；', L'’', L'‘',
+L'“', L'”', L'！', L'￥', L'…', L'）', L'（', L'—',
+L'「', L'」',
+L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9', L'0',
+L'a', L'b', L'c', L'd', L'e', L'f', L'g',
+L'h', L'i', L'j', L'k', L'l', L'm', L'n',
+L'o', L'p', L'q', L'r', L's', L't',
+L'u', L'v', L'w', L'x', L'y', L'z',
+L'A', L'B', L'C', L'D', L'E', L'F', L'G',
+L'H', L'I', L'J', L'K', L'L', L'M', L'N',
+L'O', L'P', L'Q', L'R', L'S', L'T',
+L'U', L'V', L'W', L'X', L'Y', L'Z'
+};
+locale chn("chs");
+
+int travelsal(string train_file) {
+	wfstream fio(train_file);
+	fio.imbue(chn);
+	wstring input;
+	while (fio >> input) {
+		for (auto &ch : input)
+			if (invalid_character.find(ch) != invalid_character.end())
+				ch = L' ';
+		for (int i = 1; i < input.size(); ++i) {
+			if (input[i] == L' ' || input[i - 1] == L' ') continue; //跳过空格
+			if (maps.find(input[i]) == maps.end())
+				maps[input[i]].sum = 1;
+			else
+				maps[input[i]].sum++;
+			wstringstream wsstemp; wsstemp << input[i - 1];
+			wstring wstemp = wsstemp.str();
+			Parent &par = maps[input[i]];
+			if (par.key.find(wstemp) == par.key.end())
+				par.key[wstemp] = 1;
+			else
+				par.key[wstemp]++;
+		}
+	}
+	return 0;
+}
+
+int process(string inputfile) {
+	wfstream fio(inputfile);
+	fio.imbue(chn);
+	wstringstream wss; wss << fio.rdbuf();
+	wstring input = wss.str(), line;
+	for (auto &ch : input)
+		if (invalid_character.find(ch) != invalid_character.end())
+			ch = L' ';
+	wss.str(L"");
+	wss << input;
+	while (wss >> line) { //遍历句段
+		wcout << line << endl;
+		wstringstream wsstemp;
+		vector<Per> stc;
+		for (size_t i = 1; i < line.size(); ++i) {
+			wsstemp.str(L"");
+			wsstemp << line[i - 1];
+			double son = maps[line[i]].key[wsstemp.str()];
+			double mo = maps[line[i]].sum;
+			stc.push_back({ i, son / mo });
+		}
+		//录入概率
+		for (int i = 0; i < stc.size(); ++i)
+			for (int j = i; j < stc.size(); ++j)
+				if (stc[i].prob < stc[j].prob) {
+					Per ptemp = stc[j];
+					stc[j] = stc[i];
+					stc[i] = ptemp;
+				}
+		//排序
+	}
+	return 0;
+}
+
+int twidec() {
 	locale china("chs");
 	wfstream fio;
 	unordered_set<wstring> wset;
@@ -17,11 +109,11 @@ int main() {
 	while (!fio.eof()) {
 		fio >> s;
 		wset.insert(s);
-		fio >> s; 
+		fio >> s;
 	}
 	size_t loc, forward_parts = 0, backward_parts = 0;
 	bool isword = true;
-	wstring input = L"在一个多世纪的办学历程中，南京大学及其前身与时代同呼吸、与民族共命运，谋国家之强盛、求科学之进步，为国家的富强和民族的振兴做出了重要的贡献。尤其是改革开放以来，作为教育部直属的重点综合性大学，南京大学又在崭新的历史机遇中焕发出新的生机，在教学、科研和社会服务等各个领域保持良好的发展态势，各项办学指标和综合实力均位居全国高校前列。1994年，南京大学被确定为国家“211工程”重点支持的大学；1999年，南京大学进入国家“985工程”首批重点建设的高水平大学行列；2006年，教育部和江苏省再次签订重点共建南京大学的协议；2011年，教育部和江苏省签署协议继续重点共建南京大学。";
+	wstring input = L"吴御洲是南大计科最强的。";
 	wstring copy = input;
 	while (input.size() > 0) {
 		loc = 0;
@@ -73,5 +165,14 @@ int main() {
 	for (auto i = vecw.size() - 1; i > 0; --i)
 		wcout << vecw[i];
 	cout << "\nparts: " << backward_parts << endl;
+	return 0;
+}
+
+int main() {
+	wcin.imbue(chn); wcout.imbue(chn);
+	string filename("sc.txt");
+	travelsal(filename);
+	process("test.txt");
+	//twidec();
 	return 0;
 }

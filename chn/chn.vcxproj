@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="baidu.txt" />
+    <Text Include="小说.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
