@@ -47,7 +47,7 @@ int travelsal(string train_file) {
 		for (auto &ch : input)
 			if (invalid_character.find(ch) != invalid_character.end())
 				ch = L' ';
-		for (int i = 1; i < input.size(); ++i) {
+		for (size_t i = 1; i < input.size(); ++i) {
 			if (input[i] == L' ' || input[i - 1] == L' ') continue; //Ìø¹ý¿Õ¸ñ
 			if (maps.find(input[i]) == maps.end())
 				maps[input[i]].sum = 1;
@@ -79,6 +79,8 @@ int process(string inputfile) {
 		wcout << line << endl;
 		wstringstream wsstemp;
 		vector<Per> stc;
+		unordered_set<size_t> slocs;
+		vector<size_t> vorder;
 		for (size_t i = 1; i < line.size(); ++i) {
 			wsstemp.str(L"");
 			wsstemp << line[i - 1];
@@ -87,14 +89,22 @@ int process(string inputfile) {
 			stc.push_back({ i, son / mo });
 		}
 		//Â¼Èë¸ÅÂÊ
-		for (int i = 0; i < stc.size(); ++i)
-			for (int j = i; j < stc.size(); ++j)
+		for (size_t i = 0; i < stc.size(); ++i)
+			for (size_t j = i; j < stc.size(); ++j)
 				if (stc[i].prob < stc[j].prob) {
 					Per ptemp = stc[j];
 					stc[j] = stc[i];
 					stc[i] = ptemp;
 				}
-		//ÅÅÐò
+		//¸ÅÂÊÅÅÐò
+		for (size_t i = 0; i < stc.size(); ++i) 
+			if (slocs.find(stc[i].loc) == slocs.end() && slocs.find(stc[i].loc - 1) == slocs.end()) {
+				slocs.emplace(stc[i].loc);
+				slocs.emplace(stc[i].loc - 1);
+				vorder.push_back(stc[i].loc);
+			}
+		//¶ÌÓïÅÅÐò
+
 	}
 	return 0;
 }
