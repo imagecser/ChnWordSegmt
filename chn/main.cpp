@@ -32,7 +32,7 @@ L'&', L'*', L'(', L')', L'-', L'_', L'=', L'+',
 L'<', L'>', L'/', L'"', L';', L':', L'£¬', L'¡£',
 L'¡¶', L'¡·', L'£¿', L'¡¢', L'£º', L'£»', L'¡¯', L'¡®',
 L'¡°', L'¡±', L'£¡', L'£¤', L'¡­', L'£©', L'£¨', L'¡ª',
-L'¡¸', L'¡¹',
+L'¡¸', L'¡¹', L'¡«',L'£½',
 L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9', L'0',
 L'a', L'b', L'c', L'd', L'e', L'f', L'g',
 L'h', L'i', L'j', L'k', L'l', L'm', L'n',
@@ -169,17 +169,15 @@ int process(string inputfile) {
 	return 0;
 }
 
-int twidec() {
-	locale china("chs");
+int twidec(string dicfilename) {
 	wfstream fio;
 	unordered_set<wstring> wset;
-	fio.imbue(china); wcin.imbue(china); wcout.imbue(china);
-	fio.open("baidu.txt");
+	fio.imbue(chn); wcin.imbue(chn); wcout.imbue(chn);
+	fio.open(dicfilename);
 	wstring s;
 	while (!fio.eof()) {
 		fio >> s;
 		wset.insert(s);
-		fio >> s;
 	}
 	size_t loc, forward_parts = 0, backward_parts = 0;
 	bool isword = true;
@@ -238,12 +236,9 @@ int twidec() {
 	return 0;
 }
 
-bool compSums(pair<wstring, unsigned> elem1, pair<wstring, unsigned> elem2) {
-	return elem1.second > elem2.second;
-}
-
 void makeSum() {
 	//read maps
+	unordered_set<wstring> cp;
 	unordered_map<wstring, unsigned>sums;
 	for (auto tree : maps) {
 		for (auto item : tree.second.key) {
@@ -258,24 +253,60 @@ void makeSum() {
 	};
 	set<pair<wstring, unsigned>, Comparator> sumsSet(sums.begin(), sums.end(), comFunctor);
 	for (auto item : sumsSet) {
-		bool issm = false;
-		for (auto cmp : sumsSet) 
-			if (cmp.first.find(item.first) != cmp.first.npos) {
-				issm = true;
-				break;
-			}
+		/*bool issm = false;
+		for (auto cmp : sumsSet) {
+			if(cmp.first != item.first && item.first.find(cmp.first) != item.first.npos)
+				if (item.second > (double)cmp.second * 0.7) {
+					issm = true;
+					break;
+				}
+		}
+		if (!issm)*/
+		if(item.second > 20)
+			cp.insert(item.first);
 	}
-	for (auto item : sumsSet)
-		if (item.second > 50)
-			wcout << item.first << ": " << item.second << endl;
-		else
-			break;
+	//cp.erase(L"");
+	cp.erase(L"¶¨µÄ");
+	cp.erase(L"ÊÇÔ©");
+	for (auto item : cp)
+		wcout << item << endl;
+}
+
+void writeMap(string filename) {
+	wofstream fio(filename);
+	fio.imbue(chn);
+	for (auto item : maps) {
+		fio << item.first << L" " << item.second.sum;
+		for (auto piece : item.second.key) 
+			fio << piece.first << L" " << piece.second << L" ";
+		fio << endl;
+	}
+	fio.close();
+}
+
+void readMapFile(string filename) {
+	wifstream fio(filename);
+	fio.imbue(chn);
+	while (!fio.eof()) {
+		wchar_t ch; int sum;
+		fio >> ch >> sum;
+		maps[ch].sum = sum;
+		wstring line;
+		getline(fio, line);
+		wstringstream wss; wss << line;
+		wstring first; int second;
+		while (wss >> first >> second) 
+			maps[ch].key[first] = second;
+	}
 }
 
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
-	travelsal(argv[1]);
-	makeSum();
+	//travelsal(argv[1]);
+	//writeMap("maps.txt");
+	//readMapFile("maps.txt");
+	//makeSum();
 	//process(argv[2]);
+	twidec("dicsz.txt");
 	return 0;
 }
