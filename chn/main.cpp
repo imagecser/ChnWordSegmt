@@ -1,13 +1,17 @@
+#include <set>
 #include <unordered_set>
+#include <functional>
 #include <unordered_map>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <fstream>
 #include <iomanip>
 #include <sstream>
 #include <locale>
 #include <map>
+#include <cmath>
 #include <ctime>
 using namespace std;
 
@@ -58,12 +62,13 @@ int travelsal(string train_file) {
 		if (end - temp > 0 || perh - perc > 0.9999) {
 			temp = end;
 			perc = perh;
-			cout << flush << '\r' << "[" << string((int)(perh * 4 / 5), '#') << string(80 - (int)(perh * 4 / 5), ' ') << "] " << pstemp << "/" << ps << "  " << setprecision(3) <<  perh << "%   " << end - start << "s   ";
+			cout << flush << '\r' << "[" << string((int)(perh * 4 / 5), '#') << string(80 - (int)(perh * 4 / 5), ' ') << "] " << pstemp << "/" << ps << "  " << setprecision(3) << perh << "%   " << end - start << "s   ";
 		}
 		for (auto &ch : input)
 			if (invalid_character.find(ch) != invalid_character.end())
 				ch = L' ';
 		for (size_t i = 1; i < input.size(); ++i) {
+			//Ë«×Ö·û
 			if (input[i] == L' ' || input[i - 1] == L' ') continue; //Ìø¹ý¿Õ¸ñ
 			if (maps.find(input[i]) == maps.end())
 				maps[input[i]].sum = 1;
@@ -76,6 +81,35 @@ int travelsal(string train_file) {
 				par.key[wstemp] = 1;
 			else
 				par.key[wstemp]++;
+			if (i >= 2) {
+				//Èý×Ö·û
+				if (input[i] == L' ' || input[i - 1] == L' ' || input[i - 2] == L' ') continue; //Ìø¹ý¿Õ¸ñ
+				if (maps.find(input[i]) == maps.end())
+					maps[input[i]].sum = 1;
+				else
+					maps[input[i]].sum++;
+				wstringstream wsstemp; wsstemp << input[i - 2] << input[i - 1];
+				wstring wstemp = wsstemp.str();
+				Parent &par = maps[input[i]];
+				if (par.key.find(wstemp) == par.key.end())
+					par.key[wstemp] = 1;
+				else
+					par.key[wstemp]++;
+			}
+			if (i >= 3) {
+				if (input[i] == L' ' || input[i - 1] == L' ' || input[i - 2] == L' ' || input[i - 3] == L' ') continue; //Ìø¹ý¿Õ¸ñ
+				if (maps.find(input[i]) == maps.end())
+					maps[input[i]].sum = 1;
+				else
+					maps[input[i]].sum++;
+				wstringstream wsstemp; wsstemp << input[i - 3] << input[i - 2] << input[i - 1];
+				wstring wstemp = wsstemp.str();
+				Parent &par = maps[input[i]];
+				if (par.key.find(wstemp) == par.key.end())
+					par.key[wstemp] = 1;
+				else
+					par.key[wstemp]++;
+			}
 		}
 	}
 	fio.close();
@@ -104,7 +138,7 @@ int process(string inputfile) {
 			wsstemp << line[i - 1];
 			float son = (float)maps[line[i]].key[wsstemp.str()];
 			float mo = (float)maps[line[i]].sum;
-			stc.push_back({ i, son == 0 ? 0 : son / mo * log10f(mo)});
+			stc.push_back({ i, son == 0 ? 0 : son / mo * log(mo) });
 		}
 		//Â¼Èë¸ÅÂÊ
 		for (size_t i = 0; i < stc.size(); ++i)
@@ -114,14 +148,14 @@ int process(string inputfile) {
 					stc[j] = stc[i];
 					stc[i] = ptemp;
 				}
-		//¸ÅÂÊÅÅÐò
+		//¾äÖÐ¸ÅÂÊÅÅÐò
 		for (size_t i = 0; i < stc.size(); ++i)
 			if (slocs.find(stc[i].loc) == slocs.end() && slocs.find(stc[i].loc - 1) == slocs.end()) {
 				slocs.emplace(stc[i].loc);
 				slocs.emplace(stc[i].loc - 1);
 				sorder.emplace(stc[i].loc);
 			}
-		//¶ÌÓïÅÅÐò
+		//¾äÖÐ¶ÌÓïÅÅÐò
 		for (size_t i = 0; i < line.size(); ++i) {
 			if (sorder.find(i + 1) == sorder.end())
 				wcout << line[i] << L" ";
@@ -204,16 +238,44 @@ int twidec() {
 	return 0;
 }
 
+bool compSums(pair<wstring, unsigned> elem1, pair<wstring, unsigned> elem2) {
+	return elem1.second > elem2.second;
+}
+
+void makeSum() {
+	//read maps
+	unordered_map<wstring, unsigned>sums;
+	for (auto tree : maps) {
+		for (auto item : tree.second.key) {
+			wstringstream wss;
+			wss << item.first << tree.first;
+			sums[wss.str()] = item.second;
+		}
+	}
+	typedef function<bool(pair<wstring, unsigned>, pair<wstring, unsigned>)> Comparator;
+	Comparator comFunctor = [](pair<wstring, unsigned> elem1, pair<wstring, unsigned> elem2) {
+		return elem1.second > elem2.second;
+	};
+	set<pair<wstring, unsigned>, Comparator> sumsSet(sums.begin(), sums.end(), comFunctor);
+	for (auto item : sumsSet) {
+		bool issm = false;
+		for (auto cmp : sumsSet) 
+			if (cmp.first.find(item.first) != cmp.first.npos) {
+				issm = true;
+				break;
+			}
+	}
+	for (auto item : sumsSet)
+		if (item.second > 50)
+			wcout << item.first << ": " << item.second << endl;
+		else
+			break;
+}
+
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
-	//if (argc <= 2) {
-	//	travelsal("yd.txt");
-	//	process("test.txt");
-	//	//twidec();
-	//} else	
-	
-		travelsal(argv[1]);
-		process(argv[2]);
-	
+	travelsal(argv[1]);
+	makeSum();
+	//process(argv[2]);
 	return 0;
 }
