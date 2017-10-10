@@ -26,6 +26,7 @@ struct Per {
 };
 
 unordered_map<wchar_t, Parent> maps;
+unordered_set<wstring> wset;
 unordered_set<wchar_t> invalid_character = {
 L'.', L',', L'!', L'@', L'#', L'$', L'%', L'^',
 L'&', L'*', L'(', L')', L'-', L'_', L'=', L'+',
@@ -169,16 +170,19 @@ int process(string inputfile) {
 	return 0;
 }
 
-int twidec(string dicfilename) {
+void readdic(string dicfilename) {
 	wfstream fio;
-	unordered_set<wstring> wset;
-	fio.imbue(chn); wcin.imbue(chn); wcout.imbue(chn);
+	fio.imbue(chn);
 	fio.open(dicfilename);
 	wstring s;
 	while (!fio.eof()) {
 		fio >> s;
 		wset.insert(s);
 	}
+}
+
+int twidec(string dicfilename) {
+	wcin.imbue(chn); wcout.imbue(chn);
 	size_t loc, forward_parts = 0, backward_parts = 0;
 	bool isword = true;
 	wstring input = L"吴御洲是南大计科最强的。";
@@ -236,7 +240,7 @@ int twidec(string dicfilename) {
 	return 0;
 }
 
-void makeSum() {
+void makeSum(string dicfilename) {
 	//read maps
 	unordered_set<wstring> cp;
 	unordered_map<wstring, unsigned>sums;
@@ -268,8 +272,11 @@ void makeSum() {
 	//cp.erase(L"");
 	cp.erase(L"定的");
 	cp.erase(L"是冤");
+	wofstream fio(dicfilename, ios::app);
+	fio.imbue(chn);
 	for (auto item : cp)
-		wcout << item << endl;
+		fio << item << endl;
+	fio.close();
 }
 
 void writeMap(string filename) {
@@ -302,11 +309,14 @@ void readMapFile(string filename) {
 
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
+	string dicFile("dic.txt");
+	readdic(dicFile);
 	//travelsal(argv[1]);
 	//writeMap("maps.txt");
 	//readMapFile("maps.txt");
-	//makeSum();
+	//makeSum(dicFile);
 	//process(argv[2]);
-	twidec("dicsz.txt");
+	//twidec("dic.txt");
+
 	return 0;
 }
