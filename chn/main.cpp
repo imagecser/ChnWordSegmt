@@ -13,14 +13,6 @@
 #include <map>
 #include <cmath>
 #include <ctime>
-
-#include <mysql_connection.h>
-#include <mysql_driver.h>
-#include <cppconn\prepared_statement.h>
-#include <cppconn\statement.h>
-#include <cppconn\metadata.h>
-#include <cppconn\driver.h>
-#include <cppconn\exception.h>
 using namespace std;
 
 struct Parent {
@@ -267,6 +259,13 @@ unordered_map<wstring, unsigned> makeSum(string dicfilename) {
 	set<pair<wstring, unsigned>, Comparator> sumsSet(sums.begin(), sums.end(), comFunctor);*/
 	return sums;
 	//cp.erase(L"");
+	cp.erase(L" ¶¨µÄ ");
+	cp.erase(L" ÊÇÔ© ");
+	wofstream fio(dicfilename, ios::app);
+	fio.imbue(chn);
+	for (auto item : cp)
+		fio << item << endl;
+	fio.close();
 }
 
 void writeMap(string filename) {
@@ -297,19 +296,9 @@ void readMapFile(string filename) {
 	}
 }
 
-void export2Sql() {
-	sql::mysql::MySQL_Driver *driver;
-	sql::Connection *con;
-	driver = sql::mysql::get_mysql_driver_instance();
-	con = driver->connect("localhost", "root", "root");
-
-
-}
-
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
 	string dicFile("dic.txt");
-	export2Sql();
 	//readdic(dicFile);
 	//travelsal(argv[1]);
 	//writeMap("maps.txt");
