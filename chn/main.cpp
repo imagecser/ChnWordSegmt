@@ -299,10 +299,10 @@ void readMapFile(string filename) {
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
 	string dicFile("dic.txt");
-	readMapFile("maps.txt");
+	//readMapFile("maps.txt");
 	//readdic(dicFile);
-	//travelsal(argv[1]);
-	//writeMap("maps.txt");
+	travelsal("sc.txt");
+	writeMap("maps.txt");
 	//readMapFile("maps.txt");
 	//makeSum(dicFile);
 	//process(argv[2]);
