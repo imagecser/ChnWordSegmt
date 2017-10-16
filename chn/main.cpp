@@ -13,6 +13,14 @@
 #include <map>
 #include <cmath>
 #include <ctime>
+
+#include <mysql_connection.h>
+#include <mysql_driver.h>
+#include <cppconn\prepared_statement.h>
+#include <cppconn\statement.h>
+#include <cppconn\metadata.h>
+#include <cppconn\driver.h>
+#include <cppconn\exception.h>
 using namespace std;
 
 struct Parent {
@@ -183,32 +191,33 @@ void readdic(string dicfilename) {
 
 int twidec(string dicfilename) {
 	wcin.imbue(chn); wcout.imbue(chn);
-	size_t loc, forward_parts = 0, backward_parts = 0;
+	size_t loc, forwardParts = 0, backwardParts = 0;
 	bool isword = true;
 	wstring input = L"吴御洲是南大计科最强的。";
 	wstring copy = input;
+	wstringstream forSeg;
 	while (input.size() > 0) {
 		loc = 0;
 		for (size_t i = 4 < input.size() ? 4 : input.size(); i > 1; --i) {
 			wstring wtemp = input.substr(0, i);
 			if (wset.find(wtemp) != wset.end()) {
 				if (!isword)
-					wcout << " ";
-				wcout << wtemp << " ";
+					forSeg << " ";
+				forSeg << wtemp << " ";
 				loc = i;
-				forward_parts++;
+				forwardParts++;
 				isword = true;
 				break;
 			}
 		}
 		if (!loc) {
-			wcout << input.substr(0, 1);
+			forSeg << input.substr(0, 1);
 			loc = 1;
 			isword = false;
 		}
 		input = input.substr(loc);
 	}
-	cout << "\nparts: " << forward_parts << endl;
+	cout << "\nparts: " << forwardParts << endl;
 	isword = true;
 	input = copy;
 	wstringstream wss;
@@ -222,7 +231,7 @@ int twidec(string dicfilename) {
 					vecw.push_back(L" ");
 				vecw.push_back(L" " + wtemp);
 				loc = i;
-				backward_parts++;
+				backwardParts++;
 				isword = true;
 				break;
 			}
@@ -236,11 +245,11 @@ int twidec(string dicfilename) {
 	}
 	for (auto i = vecw.size() - 1; i > 0; --i)
 		wcout << vecw[i];
-	cout << "\nparts: " << backward_parts << endl;
+	cout << "\nparts: " << backwardParts << endl;
 	return 0;
 }
 
-void makeSum(string dicfilename) {
+unordered_map<wstring, unsigned> makeSum(string dicfilename) {
 	//read maps
 	unordered_set<wstring> cp;
 	unordered_map<wstring, unsigned>sums;
@@ -251,32 +260,13 @@ void makeSum(string dicfilename) {
 			sums[wss.str()] = item.second;
 		}
 	}
-	typedef function<bool(pair<wstring, unsigned>, pair<wstring, unsigned>)> Comparator;
+	/*typedef function<bool(pair<wstring, unsigned>, pair<wstring, unsigned>)> Comparator;
 	Comparator comFunctor = [](pair<wstring, unsigned> elem1, pair<wstring, unsigned> elem2) {
 		return elem1.second > elem2.second;
 	};
-	set<pair<wstring, unsigned>, Comparator> sumsSet(sums.begin(), sums.end(), comFunctor);
-	for (auto item : sumsSet) {
-		/*bool issm = false;
-		for (auto cmp : sumsSet) {
-			if(cmp.first != item.first && item.first.find(cmp.first) != item.first.npos)
-				if (item.second > (double)cmp.second * 0.7) {
-					issm = true;
-					break;
-				}
-		}
-		if (!issm)*/
-		if(item.second > 20)
-			cp.insert(item.first);
-	}
+	set<pair<wstring, unsigned>, Comparator> sumsSet(sums.begin(), sums.end(), comFunctor);*/
+	return sums;
 	//cp.erase(L"");
-	cp.erase(L"定的");
-	cp.erase(L"是冤");
-	wofstream fio(dicfilename, ios::app);
-	fio.imbue(chn);
-	for (auto item : cp)
-		fio << item << endl;
-	fio.close();
 }
 
 void writeMap(string filename) {
@@ -307,16 +297,25 @@ void readMapFile(string filename) {
 	}
 }
 
+void export2Sql() {
+	sql::mysql::MySQL_Driver *driver;
+	sql::Connection *con;
+	driver = sql::mysql::get_mysql_driver_instance();
+	con = driver->connect("localhost", "root", "root");
+
+
+}
+
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
 	string dicFile("dic.txt");
-	readdic(dicFile);
+	export2Sql();
+	//readdic(dicFile);
 	//travelsal(argv[1]);
 	//writeMap("maps.txt");
 	//readMapFile("maps.txt");
 	//makeSum(dicFile);
 	//process(argv[2]);
 	//twidec("dic.txt");
-
 	return 0;
 }
