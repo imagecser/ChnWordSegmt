@@ -272,7 +272,7 @@ void writeMap(string filename) {
 	wofstream fio(filename);
 	fio.imbue(chn);
 	for (auto item : maps) {
-		fio << item.first << L" " << item.second.sum;
+		fio << item.first << L" " << item.second.sum << endl;
 		for (auto piece : item.second.key) 
 			fio << piece.first << L" " << piece.second << L" ";
 		fio << endl;
@@ -299,6 +299,7 @@ void readMapFile(string filename) {
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
 	string dicFile("dic.txt");
+	readMapFile("maps.txt");
 	//readdic(dicFile);
 	//travelsal(argv[1]);
 	//writeMap("maps.txt");
