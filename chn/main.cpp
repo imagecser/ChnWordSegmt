@@ -13,6 +13,7 @@
 #include <map>
 #include <cmath>
 #include <ctime>
+#include <cstdio>
 using namespace std;
 
 struct Parent {
@@ -269,7 +270,7 @@ unordered_map<wstring, unsigned> makeSum(string dicfilename) {
 }
 
 void writeMap(string filename) {
-	wofstream fio(filename);
+	wofstream fio(filename, ios::app);
 	fio.imbue(chn);
 	for (auto item : maps) {
 		fio << item.first << L" " << item.second.sum << endl;
@@ -278,6 +279,8 @@ void writeMap(string filename) {
 		fio << endl;
 	}
 	fio.close();
+	system("python D:\\_work\\chn\\pychn\\cpp_write_sql.py");
+	remove(filename.c_str());
 }
 
 void readMapFile(string filename) {
@@ -298,7 +301,7 @@ void readMapFile(string filename) {
 
 int main(int argc, char *argv[]) {
 	wcin.imbue(chn); wcout.imbue(chn);
-	string dicFile("dic.txt");
+	//string dicFile("dic.txt");
 	//readMapFile("maps.txt");
 	//readdic(dicFile);
 	travelsal("sc.txt");
