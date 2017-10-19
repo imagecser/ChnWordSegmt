@@ -16,7 +16,7 @@ def remove_symbol(source):
     :returns: 格式化后的源文件内容
     """
     dest = ""
-    invalid_character = "\t\r\n，。：；“‘”【】『』|=+-——（）*&……%￥#@！~·《》？/?<>,.;:'\"[]{}_)(^$!` \
+    invalid_character = "\t\r\n，。：；“‘”【】『』|=+-——（）*&……%￥#@！~·《》、？/?<>,.;:'\"[]{}_)(^$!` \
                     abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
     for char in source:
         if char in invalid_character:
@@ -35,7 +35,7 @@ def read_file(file_name):
         return remove_symbol(file_handler.read())
 
 
-def read_sentence(sentence, maps, max_len_word=6):
+def read_sentence(sentence, maps, max_len_word):
     """
     录入内容
     :para sentence: 单句
@@ -64,7 +64,7 @@ def read_sentence(sentence, maps, max_len_word=6):
     return maps
 
 
-def read_source(source):
+def read_source(source, max_len_word=2):
     """
     被空格分割的格式化的源文件，生成统计集合
     :para source: 被空格分割的格式化过的源文件
@@ -73,7 +73,7 @@ def read_source(source):
     sentence_list = source.split()
     maps = {}
     for sentence in sentence_list:
-        read_sentence(sentence, maps, 2)
+        read_sentence(sentence, maps, max_len_word)
     return maps
 
 
@@ -99,8 +99,9 @@ def calc_condensation_degree(maps):
         if length_word > 1:
             degs = []
             for index in range(1, length_word):
-                degs.append(maps[key][1] / (maps[key[:index]]
-                                            [1] * maps[key[index:]][1]))
+                div = 10000 * (maps[key[:index]][1] * maps[key[index:]][1])
+                result = maps[key][1] / div
+                degs.append(result)
             maps[key][2] = min(degs)
 
 
@@ -114,22 +115,43 @@ def calc_freedom_degree(maps):
         beg_deg = 0
         end_deg = 0
         for beg in maps[key][4]:
-            beg_value = 1 / len(maps[key][4])
+            beg_value = 1 / (100 * len(maps[key][4]))
             beg_deg -= math.log(beg_value) * beg_value
         for end in maps[key][5]:
-            end_value = 1 / len(maps[key][5])
+            end_value = 1 / (100 * len(maps[key][5]))
             end_deg -= math.log(end_value) * end_value
         maps[key][3] = min([beg_deg, end_deg])
     return maps
 
 
+def filter_map(maps):
+    result = {}
+    for key, value in maps.items():
+        if len(key) > 1 and value[2] > 1 and value[3] > .05:
+            result[key] = value
+    ordered = {}
+    for key, value in result.items():
+        ordered[key] = value[1]
+        # print(key + ": %.8f, %.2f, %.2f" % (value[1], value[2], value[3]))
+    res = sorted(ordered.items(), key=lambda x: x[1])
+    for item in res:
+        print(item[0], item[1] * 100000)
+    # ordered = [0]
+    # for key, value in maps.items():
+    #     ordered.append(value[3])
+    # ordered = sorted(ordered)
+    # for item in ordered:
+    #    print(item)
+
+
 if __name__ == '__main__':
-    SOURCE = read_file("test.txt")
-    gather = read_source(SOURCE)
+    SOURCE = read_file("sc.txt")
+    gather = read_source(SOURCE, 6)
     # print(MAPS)
     LENGTH = len(SOURCE) - SOURCE.count(' ')
     calc_freq(gather, LENGTH)
     calc_condensation_degree(gather)
     gather = calc_freedom_degree(gather)
-    for key, value in gather.items():
-        print(key, value)
+    filter_map(gather)
+    # for key, value in gather.items():
+    #     print(key, value)
