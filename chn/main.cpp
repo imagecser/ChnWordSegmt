@@ -31,10 +31,10 @@ unordered_set<wstring> wset;
 unordered_set<wchar_t> invalid_character = {
 L'.', L',', L'!', L'@', L'#', L'$', L'%', L'^',
 L'&', L'*', L'(', L')', L'-', L'_', L'=', L'+',
-L'<', L'>', L'/', L'"', L';', L':', L'£¬', L'¡£',
-L'¡¶', L'¡·', L'£¿', L'¡¢', L'£º', L'£»', L'¡¯', L'¡®',
-L'¡°', L'¡±', L'£¡', L'£¤', L'¡­', L'£©', L'£¨', L'¡ª',
-L'¡¸', L'¡¹', L'¡«',L'£½',
+L'<', L'>', L'/', L'"', L';', L':', L'ï¼Œ', L'ã€‚',
+L'ã€Š', L'ã€‹', L'ï¼Ÿ', L'ã€', L'ï¼š', L'ï¼›', L'â€™', L'â€˜',
+L'â€œ', L'â€', L'ï¼', L'ï¿¥', L'â€¦', L'ï¼‰', L'ï¼ˆ', L'â€”',
+L'ã€Œ', L'ã€', L'ï½',L'ï¼',
 L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9', L'0',
 L'a', L'b', L'c', L'd', L'e', L'f', L'g',
 L'h', L'i', L'j', L'k', L'l', L'm', L'n',
@@ -70,8 +70,8 @@ int travelsal(string train_file) {
 			if (invalid_character.find(ch) != invalid_character.end())
 				ch = L' ';
 		for (size_t i = 1; i < input.size(); ++i) {
-			//Ë«×Ö·û
-			if (input[i] == L' ' || input[i - 1] == L' ') continue; //Ìø¹ı¿Õ¸ñ
+			//åŒå­—ç¬¦
+			if (input[i] == L' ' || input[i - 1] == L' ') continue; //è·³è¿‡ç©ºæ ¼
 			if (maps.find(input[i]) == maps.end())
 				maps[input[i]].sum = 1;
 			else
@@ -84,8 +84,8 @@ int travelsal(string train_file) {
 			else
 				par.key[wstemp]++;
 			if (i >= 2) {
-				//Èı×Ö·û
-				if (input[i] == L' ' || input[i - 1] == L' ' || input[i - 2] == L' ') continue; //Ìø¹ı¿Õ¸ñ
+				//ä¸‰å­—ç¬¦
+				if (input[i] == L' ' || input[i - 1] == L' ' || input[i - 2] == L' ') continue; //è·³è¿‡ç©ºæ ¼
 				if (maps.find(input[i]) == maps.end())
 					maps[input[i]].sum = 1;
 				else
@@ -99,7 +99,7 @@ int travelsal(string train_file) {
 					par.key[wstemp]++;
 			}
 			if (i >= 3) {
-				if (input[i] == L' ' || input[i - 1] == L' ' || input[i - 2] == L' ' || input[i - 3] == L' ') continue; //Ìø¹ı¿Õ¸ñ
+				if (input[i] == L' ' || input[i - 1] == L' ' || input[i - 2] == L' ' || input[i - 3] == L' ') continue; //è·³è¿‡ç©ºæ ¼
 				if (maps.find(input[i]) == maps.end())
 					maps[input[i]].sum = 1;
 				else
@@ -130,7 +130,7 @@ int process(string inputfile) {
 			ch = L' ';
 	wss.str(L"");
 	wss << input;
-	while (wss >> line) { //±éÀú¾ä¶Î
+	while (wss >> line) { //éå†å¥æ®µ
 		wstringstream wsstemp;
 		vector<Per> stc;
 		unordered_set<size_t> slocs;
@@ -142,7 +142,7 @@ int process(string inputfile) {
 			float mo = (float)maps[line[i]].sum;
 			stc.push_back({ i, son == 0 ? 0 : son / mo * log(mo) });
 		}
-		//Â¼Èë¸ÅÂÊ
+		//å½•å…¥æ¦‚ç‡
 		for (size_t i = 0; i < stc.size(); ++i)
 			for (size_t j = i; j < stc.size(); ++j)
 				if (stc[i].prob < stc[j].prob) {
@@ -150,14 +150,14 @@ int process(string inputfile) {
 					stc[j] = stc[i];
 					stc[i] = ptemp;
 				}
-		//¾äÖĞ¸ÅÂÊÅÅĞò
+		//å¥ä¸­æ¦‚ç‡æ’åº
 		for (size_t i = 0; i < stc.size(); ++i)
 			if (slocs.find(stc[i].loc) == slocs.end() && slocs.find(stc[i].loc - 1) == slocs.end()) {
 				slocs.emplace(stc[i].loc);
 				slocs.emplace(stc[i].loc - 1);
 				sorder.emplace(stc[i].loc);
 			}
-		//¾äÖĞ¶ÌÓïÅÅĞò
+		//å¥ä¸­çŸ­è¯­æ’åº
 		for (size_t i = 0; i < line.size(); ++i) {
 			if (sorder.find(i + 1) == sorder.end())
 				wcout << line[i] << L" ";
@@ -186,7 +186,7 @@ int twidec(string dicfilename) {
 	wcin.imbue(chn); wcout.imbue(chn);
 	size_t loc, forwardParts = 0, backwardParts = 0;
 	bool isword = true;
-	wstring input = L"ÎâÓùÖŞÊÇÄÏ´ó¼Æ¿Æ×îÇ¿µÄ¡£";
+	wstring input = L"å´å¾¡æ´²æ˜¯å—å¤§è®¡ç§‘æœ€å¼ºçš„ã€‚";
 	wstring copy = input;
 	wstringstream forSeg;
 	while (input.size() > 0) {
@@ -260,8 +260,8 @@ unordered_map<wstring, unsigned> makeSum(string dicfilename) {
 	set<pair<wstring, unsigned>, Comparator> sumsSet(sums.begin(), sums.end(), comFunctor);*/
 	return sums;
 	//cp.erase(L"");
-	cp.erase(L" ¶¨µÄ ");
-	cp.erase(L" ÊÇÔ© ");
+	cp.erase(L" å®šçš„ ");
+	cp.erase(L" æ˜¯å†¤ ");
 	wofstream fio(dicfilename, ios::app);
 	fio.imbue(chn);
 	for (auto item : cp)
