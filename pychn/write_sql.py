@@ -1,3 +1,4 @@
+#! python3
 # coding: utf-8
 import sqlalchemy
 import sqlalchemy.orm
@@ -19,7 +20,7 @@ def read_map(filename):
             if not parent_line:
                 break
             child_line = f.readline().split()
-            for i in xrange(0, len(child_line), 2):
+            for i in range(0, len(child_line), 2):
                 item = child_line[i: i + 2]
                 reading_map.append({'key': ''.join([item[0], parent_line[0]]), 'num': int(item[1].replace(',', ''))})
     return reading_map
