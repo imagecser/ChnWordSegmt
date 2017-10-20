@@ -2,12 +2,19 @@
 # coding: utf-8
 import math
 import time
+import collections
 """
 created on 10/19/2017
 
 based on ../chn/main.cpp
 
 """
+
+paras = {
+    "source_file": "sc.txt",
+    "output_file": "sc.output",
+    "max_word_length": 4
+}
 
 
 def remove_symbol(source):
@@ -17,8 +24,8 @@ def remove_symbol(source):
     :returns: 格式化后的源文件内容
     """
     dest = ""
-    invalid_character = "\t\r\n，。：；“‘”【】『』|=+-——（）*&……%￥#@！~·《》、？/?<>,.;:'\"[]{}_)(^$!` \
-                    abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+    invalid_character = "\t\r\n，。：；“‘”【】『』|=+-—－（）*&……%￥#@！~·《》、？/?<>,.;:'\"[]{}_)(^$!` \
+                    abcсdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
     for char in source:
         if char in invalid_character:
             char = ' '
@@ -73,10 +80,12 @@ def read_source(source, max_len_word=2):
     :returns: 源文件生成的统计过频数的集合
     """
     print("loading file content...")
+    setup = time.time()
     sentence_list = source.split()
     maps = {}
     for sentence in sentence_list:
         read_sentence(sentence, maps, max_len_word)
+    print("time: %.4fs"%(time.time() - setup))
     return maps
 
 
@@ -87,7 +96,7 @@ def calc_freq(maps, length):
     :para length: 源文件总长度
     :returns: 计算出词频的统计集合
     """
-
+    print("calculating word frequences...")
     for key in maps.keys():
         maps[key][1] = float(maps[key][0]) / length
 
@@ -98,6 +107,7 @@ def calc_condensation_degree(maps):
     :para maps: 统计集合
     :returns: 计算出凝聚程度的统计集合
     """
+    print("calculating condensation degrees...")
     for key in maps.keys():
         length_word = len(key)
         if length_word > 1:
@@ -120,31 +130,38 @@ def calc_freedom_degree(maps):
     :para maps: 统计集合
     :returns: 计算出自由程度的统计集合
     """
+    print("calculating freedom degrees...")
     for key in maps.keys():
-        beg_deg = 0
-        end_deg = 0
-        for beg in maps[key][4]:
-            beg_value = float(1) / (len(maps[key][4]))
-            beg_deg -= math.log(beg_value) * beg_value
-        for end in maps[key][5]:
-            end_value = float(1) / (len(maps[key][5]))
-            end_deg -= math.log(end_value) * end_value
-        maps[key][3] = min([beg_deg, end_deg])
+        degs = []
+        for index in range(4,6):
+            deg = 0
+            freq_counter = collections.Counter(maps[key][index])
+            data_length = len(maps[key][index])
+            for value in freq_counter.values():
+                freq = float(value) / data_length
+                deg -= math.log(freq) * freq
+            degs.append(deg)
+        maps[key][3] = min(degs)
     return maps
 
 
 def filter_map(maps):
+    """
+    输出指定筛选结果
+    :para maps:统计集合
+    """
     result = {}
+    print("filtering special condition...")
     for key, value in maps.items():
         if len(key) > 1 and value[2] > 0.5 and value[3] > .01 and value[2] * value[3] > 0.01:
             result[key] = value
     ordered = {}
     for key, value in result.items():
-        ordered[key] = value[1]
+        ordered[key] = [value[1], value[2], value[3]]
         # print(key + ": %.8f, %.2f, %.2f" % (value[1], value[2], value[3]))
-    res = sorted(ordered.items(), key=lambda x: x[1])
+    res = sorted(ordered.items(), key=lambda x: x[1][1])
     for item in res:
-        print(item[0], item[1] * 100000)
+        yield(str(item[0]) + str(item[1]) + '\n')
     # ordered = [0]
     # for key, value in maps.items():
     #     ordered.append(value[3])
@@ -153,14 +170,24 @@ def filter_map(maps):
     #    print(item)
 
 
+def write_output(iter, file_name):
+    """
+    将筛选结果输出到指定文件
+    :para iter: 筛选结果迭代器
+    :para file_name: 输出文件名
+    """
+    with open(file_name, "w") as f:
+        f.writelines(iter)
+
+
 if __name__ == '__main__':
-    SOURCE = read_file("novel.txt")
-    gather = read_source(SOURCE, 4)
-    # print(MAPS)
+    SOURCE = read_file(paras["source_file"])
+    GATHER = read_source(SOURCE, paras["max_word_length"])
     LENGTH = len(SOURCE) - SOURCE.count(' ')
-    calc_freq(gather, LENGTH)
-    calc_condensation_degree(gather)
-    gather = calc_freedom_degree(gather)
-    filter_map(gather)
+    calc_freq(GATHER, LENGTH)
+    calc_condensation_degree(GATHER)
+    calc_freedom_degree(GATHER)
+    OUTPUT_ITER = filter_map(GATHER)
+    write_output(OUTPUT_ITER, paras["output_file"])
     # for key, value in gather.items():
     #     print(key, value)
