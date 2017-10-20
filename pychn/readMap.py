@@ -13,7 +13,7 @@ based on ../chn/main.cpp
 paras = {
     "source_file": "sc.txt",
     "output_file": "sc.output",
-    "max_word_length": 4
+    "max_word_length": 8
 }
 
 
@@ -153,13 +153,13 @@ def filter_map(maps):
     result = {}
     print("filtering special condition...")
     for key, value in maps.items():
-        if len(key) > 1 and value[2] > 0.5 and value[3] > .01 and value[2] * value[3] > 0.01:
+        if len(key) > 1 and value[2] > 0.0015 and value[3] > 2:
             result[key] = value
     ordered = {}
     for key, value in result.items():
-        ordered[key] = [value[1], value[2], value[3]]
+        ordered[key] = [value[1], 122 * value[2], value[3]]
         # print(key + ": %.8f, %.2f, %.2f" % (value[1], value[2], value[3]))
-    res = sorted(ordered.items(), key=lambda x: x[1][1])
+    res = sorted(ordered.items(), key=lambda x: x[1][0])
     for item in res:
         yield(str(item[0]) + str(item[1]) + '\n')
     # ordered = [0]
@@ -178,6 +178,7 @@ def write_output(iter, file_name):
     """
     with open(file_name, "w") as f:
         f.writelines(iter)
+    f.close()
 
 
 if __name__ == '__main__':
