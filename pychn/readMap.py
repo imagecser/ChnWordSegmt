@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 import math
+import time
 """
 created on 10/19/2017
 
@@ -31,6 +32,7 @@ def read_file(file_name):
     :para file_name: 源文件名
     :returns: 格式化后的文本
     """
+    print("loading source file...")
     with open(file_name, 'r') as file_handler:
         return remove_symbol(file_handler.read())
 
@@ -70,6 +72,7 @@ def read_source(source, max_len_word=2):
     :para source: 被空格分割的格式化过的源文件
     :returns: 源文件生成的统计过频数的集合
     """
+    print("loading file content...")
     sentence_list = source.split()
     maps = {}
     for sentence in sentence_list:
@@ -84,8 +87,9 @@ def calc_freq(maps, length):
     :para length: 源文件总长度
     :returns: 计算出词频的统计集合
     """
+
     for key in maps.keys():
-        maps[key][1] = maps[key][0] / length
+        maps[key][1] = float(maps[key][0]) / length
 
 
 def calc_condensation_degree(maps):
@@ -97,12 +101,17 @@ def calc_condensation_degree(maps):
     for key in maps.keys():
         length_word = len(key)
         if length_word > 1:
-            degs = []
+            ''' degs = []
             for index in range(1, length_word):
                 div = 10000 * (maps[key[:index]][1] * maps[key[index:]][1])
                 result = maps[key][1] / div
-                degs.append(result)
-            maps[key][2] = min(degs)
+                degs.append(result) 
+            maps[key][2] = min(degs)'''
+            front_deg = maps[key][1] / \
+                (maps[key[:1]][1] * maps[key[1:]][1] *10000)
+            back_deg = maps[key][1] / \
+                (maps[key[:-1]][1] * maps[key[-1:]][1] * 10000)
+            maps[key][2] = min([front_deg, back_deg])
 
 
 def calc_freedom_degree(maps):
@@ -115,10 +124,10 @@ def calc_freedom_degree(maps):
         beg_deg = 0
         end_deg = 0
         for beg in maps[key][4]:
-            beg_value = 1 / (100 * len(maps[key][4]))
+            beg_value = float(1) / (len(maps[key][4]))
             beg_deg -= math.log(beg_value) * beg_value
         for end in maps[key][5]:
-            end_value = 1 / (100 * len(maps[key][5]))
+            end_value = float(1) / (len(maps[key][5]))
             end_deg -= math.log(end_value) * end_value
         maps[key][3] = min([beg_deg, end_deg])
     return maps
@@ -127,7 +136,7 @@ def calc_freedom_degree(maps):
 def filter_map(maps):
     result = {}
     for key, value in maps.items():
-        if len(key) > 1 and value[2] > 1 and value[3] > .05:
+        if len(key) > 1 and value[2] > 0.5 and value[3] > .01 and value[2] * value[3] > 0.01:
             result[key] = value
     ordered = {}
     for key, value in result.items():
@@ -145,8 +154,8 @@ def filter_map(maps):
 
 
 if __name__ == '__main__':
-    SOURCE = read_file("sc.txt")
-    gather = read_source(SOURCE, 6)
+    SOURCE = read_file("novel.txt")
+    gather = read_source(SOURCE, 4)
     # print(MAPS)
     LENGTH = len(SOURCE) - SOURCE.count(' ')
     calc_freq(gather, LENGTH)
