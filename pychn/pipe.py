@@ -37,6 +37,7 @@ def write_sql(maps):
     """
     engine = sqlalchemy.create_engine(
         "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
+    engine.execute("DROP TABLE " + PARAS['table'] + ";")
     engine.execute("create TABLE if not exists " + PARAS['table'] + "( \
                     id int AUTO_INCREMENT primary key, \
                     word text not null, \
@@ -76,3 +77,4 @@ def run():
     GATHER = {}
     SOURCE = analyze.read_file(analyze.PARAS["source_file"])
     GATHER = analyze.read_source(GATHER, SOURCE, 4)
+    write_sql(GATHER)
