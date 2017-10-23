@@ -1,16 +1,16 @@
-#!/usr/bin/env python3
-# coding: utf-8
-import math
-import time
-import collections
 """
 created on 10/19/2017
 
 based on ../chn/main.cpp
 
 """
+#!/usr/bin/env python3
+# coding: utf-8
+import math
+import time
+import collections
 
-paras = {
+PARAS = {
     "source_file": "sc.txt",
     "output_file": "sc.output",
     "max_word_length": 8
@@ -44,17 +44,17 @@ def read_file(file_name):
         return remove_symbol(file_handler.read())
 
 
-def read_sentence(sentence, maps, max_len_word):
+def read_sentence(sentence, maps, max_word_length):
     """
     录入内容
     :para sentence: 单句
-    :para max_len_word: 最大识别字符长度
+    :para max_word_length: 最大识别字符长度
     :returns: 词典，字串数据
     maps: {"字串": [频数, 频率, 凝聚程度, 自由程度, 前一字符, 后一字符], ...}
     """
     length = len(sentence)
     for start in range(length):
-        for len_word in range(1, max_len_word + 1):
+        for len_word in range(1, max_word_length + 1):
             if start + len_word < length + 1:
                 word = sentence[start:start + len_word]
                 if word in maps:
@@ -73,28 +73,27 @@ def read_sentence(sentence, maps, max_len_word):
     return maps
 
 
-def read_source(source, max_len_word=2):
+def read_source(maps, source, max_word_length=2):
     """
-    被空格分割的格式化的源文件，生成统计集合
+    被空格分割的格式化的源文件，生成统计字典
     :para source: 被空格分割的格式化过的源文件
     :returns: 源文件生成的统计过频数的集合
     """
     print("loading file content...")
     setup = time.time()
     sentence_list = source.split()
-    maps = {}
     for sentence in sentence_list:
-        read_sentence(sentence, maps, max_len_word)
+        read_sentence(sentence, maps, max_word_length)
     print("time: %.4fs"%(time.time() - setup))
     return maps
 
 
 def calc_freq(maps, length):
     """
-    计算统计集合的词频
-    :para maps: 统计集合
+    计算统计字典的词频
+    :para maps: 统计字典
     :para length: 源文件总长度
-    :returns: 计算出词频的统计集合
+    :returns: 计算出词频的统计字典
     """
     print("calculating word frequences...")
     for key in maps.keys():
@@ -103,9 +102,9 @@ def calc_freq(maps, length):
 
 def calc_condensation_degree(maps):
     """
-    计算统计集合的凝聚程度
-    :para maps: 统计集合
-    :returns: 计算出凝聚程度的统计集合
+    计算统计字典的凝聚程度
+    :para maps: 统计字典
+    :returns: 计算出凝聚程度的统计字典
     """
     print("calculating condensation degrees...")
     for key in maps.keys():
@@ -115,7 +114,7 @@ def calc_condensation_degree(maps):
             for index in range(1, length_word):
                 div = 10000 * (maps[key[:index]][1] * maps[key[index:]][1])
                 result = maps[key][1] / div
-                degs.append(result) 
+                degs.append(result)
             maps[key][2] = min(degs)'''
             front_deg = maps[key][1] / \
                 (maps[key[:1]][1] * maps[key[1:]][1] *10000)
@@ -126,14 +125,16 @@ def calc_condensation_degree(maps):
 
 def calc_freedom_degree(maps):
     """
-    计算统计集合的自由程度
-    :para maps: 统计集合
-    :returns: 计算出自由程度的统计集合
+    计算统计字典的自由程度
+    :para maps: 统计字典
+    :returns: 计算出自由程度的统计字典
     """
     print("calculating freedom degrees...")
+
+
     for key in maps.keys():
         degs = []
-        for index in range(4,6):
+        for index in range(4, 6):
             deg = 0
             freq_counter = collections.Counter(maps[key][index])
             data_length = len(maps[key][index])
@@ -148,7 +149,7 @@ def calc_freedom_degree(maps):
 def filter_map(maps):
     """
     输出指定筛选结果
-    :para maps:统计集合
+    :para maps:统计字典
     """
     result = {}
     print("filtering special condition...")
@@ -161,11 +162,11 @@ def filter_map(maps):
         # print(key + ": %.8f, %.2f, %.2f" % (value[1], value[2], value[3]))
     res = sorted(ordered.items(), key=lambda x: x[1][0])
     for item in res:
-        yield(str(item[0]) + str(item[1]) + '\n')
+        yield str(item[0]) + str(item[1]) + '\n'
     # ordered = [0]
     # for key, value in maps.items():
     #     ordered.append(value[3])
-    # ordered = sorted(ordered)
+    # ordered = sorted(ordered)max_len_word
     # for item in ordered:
     #    print(item)
 
@@ -181,14 +182,18 @@ def write_output(iter, file_name):
     f.close()
 
 
-if __name__ == '__main__':
-    SOURCE = read_file(paras["source_file"])
-    GATHER = read_source(SOURCE, paras["max_word_length"])
+def run():
+    """
+    template
+    """
+    SOURCE = read_file(PARAS["source_file"])
+    GATHER = {}
+    GATHER = read_source(GATHER, SOURCE, PARAS["max_word_length"])
     LENGTH = len(SOURCE) - SOURCE.count(' ')
     calc_freq(GATHER, LENGTH)
     calc_condensation_degree(GATHER)
     calc_freedom_degree(GATHER)
     OUTPUT_ITER = filter_map(GATHER)
-    write_output(OUTPUT_ITER, paras["output_file"])
+    write_output(OUTPUT_ITER, PARAS["output_file"])
     # for key, value in gather.items():
     #     print(key, value)
