@@ -9,11 +9,13 @@ based on ../chn/main.cpp
 import math
 import time
 import collections
+import pipe_sql
 
 PARAS = {
     "source_file": "sc.txt",
     "output_file": "sc.output",
-    "max_word_length": 8
+    "input": "南京大学坐落于钟灵毓秀、虎踞龙蟠的金陵古都",
+    "max_word_length": 4
 }
 
 
@@ -24,11 +26,14 @@ def remove_symbol(source):
     :returns: 格式化后的源文件内容
     """
     dest = ""
-    invalid_character = "\t\r\n，。：；“‘”【】『』|=+-—－（）*&……%￥#@！~·《》、？/?<>,.;:'\"[]{}_)(^$!` \
+    invalid_character = "\t\r\n，。：；|=+-—－（）*&……%￥#@！~·《》、？/?<>,.;:_)(^$!` \
                     abcсdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+    removed_character = "“‘”【】『』'\"[]{}"
     for char in source:
         if char in invalid_character:
             char = ' '
+        elif char in removed_character:
+            char = ''
         dest += char
     return dest
 
@@ -79,12 +84,12 @@ def read_source(maps, source, max_word_length=2):
     :para source: 被空格分割的格式化过的源文件
     :returns: 源文件生成的统计过频数的集合
     """
-    print("loading file content...")
+    # print("loading file content...")
     setup = time.time()
     sentence_list = source.split()
     for sentence in sentence_list:
         read_sentence(sentence, maps, max_word_length)
-    print("time: %.4fs"%(time.time() - setup))
+    # print("time: %.4fs" % (time.time() - setup))
     return maps
 
 
@@ -117,7 +122,7 @@ def calc_condensation_degree(maps):
                 degs.append(result)
             maps[key][2] = min(degs)'''
             front_deg = maps[key][1] / \
-                (maps[key[:1]][1] * maps[key[1:]][1] *10000)
+                (maps[key[:1]][1] * maps[key[1:]][1] * 10000)
             back_deg = maps[key][1] / \
                 (maps[key[:-1]][1] * maps[key[-1:]][1] * 10000)
             maps[key][2] = min([front_deg, back_deg])
@@ -128,10 +133,10 @@ def calc_freedom_degree(maps):
     计算统计字典的自由程度
     :para maps: 统计字典
     :returns: 计算出自由程度的统计字典
-    """
+    """  # calc_freq(GATHER, LENGTH)
+    # calc_condensation_degree(GATHER)
+    # calc_freedom_degree(GATHER)
     print("calculating freedom degrees...")
-
-
     for key in maps.keys():
         degs = []
         for index in range(4, 6):
@@ -141,9 +146,24 @@ def calc_freedom_degree(maps):
             for value in freq_counter.values():
                 freq = float(value) / data_length
                 deg -= math.log(freq) * freq
+            # print(key, freq_counter, deg)
             degs.append(deg)
         maps[key][3] = min(degs)
+
+    # for key, value in maps.items():
+    #     print(key + str(value))
     return maps
+
+
+def adjust_ratio(maps):
+    sum_free = 0
+    sum_cond = 0
+    for value in maps.values():
+        sum_cond += value[2]
+        sum_free += value[3]
+    ratio = sum_free / sum_cond
+    for value in maps.values():
+        value[2] *= ratio
 
 
 def filter_map(maps):
@@ -154,15 +174,25 @@ def filter_map(maps):
     result = {}
     print("filtering special condition...")
     for key, value in maps.items():
-        if len(key) > 1 and value[2] > 0.0015 and value[3] > 2:
+        if len(key) > 1:
             result[key] = value
+    del(maps)
     ordered = {}
     for key, value in result.items():
-        ordered[key] = [value[1], 122 * value[2], value[3]]
+        ordered[key] = [value[1], value[2] * value[3]]
         # print(key + ": %.8f, %.2f, %.2f" % (value[1], value[2], value[3]))
-    res = sorted(ordered.items(), key=lambda x: x[1][0])
+    res = sorted(ordered.items(), key=lambda x: -x[1][1])
+    del(ordered)
+    words = []
     for item in res:
-        yield str(item[0]) + str(item[1]) + '\n'
+        words.append(item[0])
+    # print(words)
+    # print(words)
+    # return words
+    ret = []
+    for item in res:
+        ret.append(str(item[0]) + str(item[1]))
+    return ret, words
     # ordered = [0]
     # for key, value in maps.items():
     #     ordered.append(value[3])
@@ -178,14 +208,35 @@ def write_output(iter, file_name):
     :para file_name: 输出文件名
     """
     with open(file_name, "w") as f:
-        f.writelines(iter)
+        for item in iter:
+            f.write(item + '\n')
     f.close()
+
+
+def get_result(input, words):
+    for word in words:
+        rep = [ch for ch in word]
+        rep = ' ' + '.'.join(rep) + ' '
+        if input.count(word) > 0:
+            input = input.replace(word, rep)
+            print(input)
+    input = input.replace('.', '').replace('  ', ' ')
+    print(input)
 
 
 def run():
     """
     template
     """
+    # SOURCE = read_file(PARAS["source_file"])
+    # GATHER = {}
+    # GATHER = read_source(GATHER, SOURCE, PARAS["max_word_length"])
+    # LENGTH = len(SOURCE) - SOURCE.count(' ')
+    # calc_freq(GATHER, LENGTH)
+    # calc_condensation_degree(GATHER)
+    # calc_freedom_degree(GATHER)
+    # OUTPUT_ITER = filter_map(GATHER)
+    # write_output(OUTPUT_ITER, PARAS["output_file"])
     SOURCE = read_file(PARAS["source_file"])
     GATHER = {}
     GATHER = read_source(GATHER, SOURCE, PARAS["max_word_length"])
@@ -193,7 +244,13 @@ def run():
     calc_freq(GATHER, LENGTH)
     calc_condensation_degree(GATHER)
     calc_freedom_degree(GATHER)
-    OUTPUT_ITER = filter_map(GATHER)
-    write_output(OUTPUT_ITER, PARAS["output_file"])
+    # pipe_sql.write_sql(GATHER)
+    adjust_ratio(GATHER)
+    OUTPUT_ITER, WORDS = filter_map(GATHER)
+    write_output(OUTPUT_ITER, PARAS['output_file'])
+    # WORDS = filter_map(GATHER)
+    # get_result(PARAS['input'], WORDS)
+    # write_output(OUTPUT_ITER, PARAS['output_file'])
     # for key, value in gather.items():
     #     print(key, value)
+
