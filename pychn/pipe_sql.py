@@ -35,7 +35,7 @@ def write_sql(maps):
     :paras maps: 待写入统计集合
     """
     engine = sqlalchemy.create_engine(
-        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
+        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=False)
     engine.execute("create TABLE if not exists " + PARAS['table'] + "( \
                     id int AUTO_INCREMENT primary key, \
                     word text not null, \
@@ -84,7 +84,7 @@ def combine_sql():
     将数据库中的相同词语项合并
     """
     engine = sqlalchemy.create_engine(
-        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
+        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=False)
     dataframe = pd.read_sql(
         "SELECT word, frequency, prefix, suffix FROM " + PARAS['table'], engine)
     for item in dataframe.groupby(['word']):
@@ -106,4 +106,3 @@ def combine_sql():
     dataframe.to_sql(PARAS['table'], engine, if_exists='append', index=False)
             
 
-# combine_sql()

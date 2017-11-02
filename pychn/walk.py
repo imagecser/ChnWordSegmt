@@ -10,6 +10,7 @@ import os
 rootdir = "files/"
 l = []
 i = 0
+m = 0
 for parent, dirname, filenames in os.walk(rootdir):
     for filename in filenames:
         source = read_file('files/' + filename)
@@ -17,7 +18,9 @@ for parent, dirname, filenames in os.walk(rootdir):
         gather = read_source(gather, source, 4)
         try:
             write_sql(gather)
+            print(i)
+            i += 1
+            m += 1
         except:
             continue
-        print(i)
-        i += 1
+        combine_sql()

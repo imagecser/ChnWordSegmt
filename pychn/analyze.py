@@ -44,7 +44,7 @@ def read_file(file_name):
     :para file_name: 源文件名
     :returns: 格式化后的文本
     """
-    print("loading source file...")
+    # print("loading source file...")
     with open(file_name, 'r') as file_handler:
         return remove_symbol(file_handler.read())
 
@@ -237,10 +237,8 @@ def run():
     # calc_freedom_degree(GATHER)
     # OUTPUT_ITER = filter_map(GATHER)
     # write_output(OUTPUT_ITER, PARAS["output_file"])
-    SOURCE = read_file(PARAS["source_file"])
-    GATHER = {}
-    GATHER = read_source(GATHER, SOURCE, PARAS["max_word_length"])
-    LENGTH = len(SOURCE) - SOURCE.count(' ')
+    GATHER = pipe_sql.read_sql()
+    LENGTH = 1000000
     calc_freq(GATHER, LENGTH)
     calc_condensation_degree(GATHER)
     calc_freedom_degree(GATHER)
@@ -254,3 +252,4 @@ def run():
     # for key, value in gather.items():
     #     print(key, value)
 
+run()
