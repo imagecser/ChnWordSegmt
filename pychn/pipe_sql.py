@@ -25,7 +25,7 @@ class Word(declarative_base()):
     suffix = sqlalchemy.Column(sqlalchemy.String, default="")
 
 
-def write_sql(maps, tablename):
+def write_sql(maps):
     """
     将统计字典写入mysql
     存入数据结构的表结构：
@@ -36,7 +36,7 @@ def write_sql(maps, tablename):
     """
     engine = sqlalchemy.create_engine(
         "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=False)
-    engine.execute("create TABLE if not exists t" + tablename + "( \
+    engine.execute("create TABLE if not exists " + PARAS['table'] + "( \
                     id int AUTO_INCREMENT primary key, \
                     word text not null, \
                     frequency bigint not null, \
@@ -50,7 +50,7 @@ def write_sql(maps, tablename):
     result_suffix = [','.join(value[5]) for key, value in maps.items()]
     dataframe = pd.DataFrame({'word': result_word, 'frequency': result_frequency,
                               'prefix': result_prefix, 'suffix': result_suffix})
-    dataframe.to_sql('t' + tablename, engine, if_exists='append', index=False)
+    dataframe.to_sql(PARAS['table'], engine, if_exists='append', index=False)
 
 
 def read_sql():

@@ -16,7 +16,7 @@ for parent, dirname, filenames in os.walk(rootdir):
         gather = {}
         gather = read_source(gather, source, 4)
         try:
-            write_sql(gather, filename)
+            write_sql(gather)
             print(i)
             i += 1
         except:
