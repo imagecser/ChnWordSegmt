@@ -90,7 +90,7 @@ def read_source(maps, source, max_word_length=2):
     for sentence in sentence_list:
         read_sentence(sentence, maps, max_word_length)
     # print("time: %.4fs" % (time.time() - setup))
-    return maps
+    return maps, len(source)
 
 
 def calc_freq(maps, length):
@@ -230,7 +230,7 @@ def run():
     """
     # SOURCE = read_file(PARAS["source_file"])
     # GATHER = {}
-    # GATHER = read_source(GATHER, SOURCE, PARAS["max_word_length"])
+    # GATHER, LENGTH = read_source(GATHER, SOURCE, PARAS["max_word_length"])
     # LENGTH = len(SOURCE) - SOURCE.count(' ')
     # calc_freq(GATHER, LENGTH)
     # calc_condensation_degree(GATHER)

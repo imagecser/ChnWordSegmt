@@ -30,18 +30,18 @@ def write_sql(maps):
     将统计字典写入mysql
     存入数据结构的表结构：
     +-----------+--------+-----------+----------+----------+
-    |  index  |  word  | frequency |  prefix  |  suffix  |
+    |   index   |  word  | frequency |  prefix  |  suffix  |
     +-----------+--------+-----------+----------+----------+
     :paras maps: 待写入统计集合
     """
     engine = sqlalchemy.create_engine(
         "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=False)
     engine.execute("create TABLE if not exists " + PARAS['table'] + "( \
-                    id int AUTO_INCREMENT primary key, \
+                    id bigint AUTO_INCREMENT primary key, \
                     word text not null, \
                     frequency bigint not null, \
-                    prefix longtext not null, \
-                    suffix longtext not null) character set utf8; \
+                    prefix text not null, \
+                    suffix text not null) character set utf8; \
                    ")
     # engine.execute("TRUNCATE TABLE " + PARAS['table'] + ";")
     result_word = [item[0] for item in maps.items()]
@@ -65,7 +65,7 @@ def read_sql():
     maps = {}
     for item in dataframe.itertuples():
         maps[item[1]] = [item[2], 0, 1, 0,
-                         item[3].split(','), item[4].split(',')]
+                         list(filter(lambda x: x, item[3].split(','))), list(filter(lambda x: x, item[4].split(',')))]
     return maps
 
 
@@ -84,25 +84,6 @@ def combine_sql():
     将数据库中的相同词语项合并
     """
     engine = sqlalchemy.create_engine(
-        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=False)
-    dataframe = pd.read_sql(
-        "SELECT word, frequency, prefix, suffix FROM " + PARAS['table'], engine)
-    for item in dataframe.groupby(['word']):
-        if len(item[1].index) > 1:
-            freq = 0
-            prefix = []
-            suffix = []
-            for i in item[1].index:
-                freq += int(dataframe.loc[i]['frequency'])
-                if len(dataframe.loc[i]['prefix']) > 0:
-                    prefix.append(dataframe.loc[i]['prefix'])
-                if len(dataframe.loc[i]['suffix']) > 0:
-                    suffix.append(dataframe.loc[i]['suffix'])
-            prefix = ','.join(prefix)
-            suffix = ','.join(suffix)
-            dataframe.loc[item[1].index[0]] = [dataframe.loc[item[1].index[0]]['word'], freq, prefix, suffix]
-            dataframe.drop(item[1].index[1:], inplace=True)
-    engine.execute("TRUNCATE TABLE " + PARAS['table'] + ";")
-    dataframe.to_sql(PARAS['table'], engine, if_exists='append', index=False)
-            
-
+        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
+    engine.execute("drop table if exists output;")
+    engine.execute("create table output(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from test group by word);")
