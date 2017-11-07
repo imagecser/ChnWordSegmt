@@ -1,0 +1,671 @@
+2017-11-07 11:59:58,920 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 11:59:58,920 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 11:59:58,922 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 11:59:58,922 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 11:59:58,923 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 11:59:58,924 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 11:59:58,925 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 11:59:58,925 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 11:59:58,926 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 11:59:58,926 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 11:59:58,926 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 11:59:58,926 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 11:59:58,927 INFO sqlalchemy.engine.base.Engine create table in12 character set utf8 collate utf8_unicode_ci(select * from test limit 11000000, 1000000);
+2017-11-07 11:59:58,927 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:00:19,919 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:00:19,920 INFO sqlalchemy.engine.base.Engine create table com12(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in12 group by word);
+2017-11-07 12:00:19,920 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:01:26,275 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:01:26,344 INFO sqlalchemy.engine.base.Engine insert into com12(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out10;
+2017-11-07 12:01:26,344 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:01:47,395 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:01:47,401 INFO sqlalchemy.engine.base.Engine create table out11(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com12 group by word);
+2017-11-07 12:01:47,401 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:03:58,232 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:03:58,242 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:03:58,242 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:03:58,273 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:03:58,273 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:03:58,275 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:03:58,275 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:03:58,277 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:03:58,277 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:03:58,277 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:03:58,278 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:03:58,278 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:03:58,278 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:03:58,279 INFO sqlalchemy.engine.base.Engine delete from out11 where char_length(word) > 2 and frequency = 1;
+2017-11-07 12:03:58,279 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:06,114 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:04:06,151 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:04:06,151 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:06,153 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:04:06,153 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:06,154 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:04:06,154 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:06,155 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:04:06,156 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:06,156 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:04:06,158 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:06,158 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:04:06,158 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:06,161 INFO sqlalchemy.engine.base.Engine create table in13 character set utf8 collate utf8_unicode_ci(select * from test limit 12000000, 1000000);
+2017-11-07 12:04:06,161 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:04:37,860 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:04:37,861 INFO sqlalchemy.engine.base.Engine create table com13(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in13 group by word);
+2017-11-07 12:04:37,861 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:05:44,529 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:05:44,532 INFO sqlalchemy.engine.base.Engine insert into com13(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out11;
+2017-11-07 12:05:44,532 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:06:07,214 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:06:07,267 INFO sqlalchemy.engine.base.Engine create table out12(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com13 group by word);
+2017-11-07 12:06:07,267 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:18,495 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:08:18,584 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:08:18,584 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:18,594 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:08:18,594 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:18,596 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:08:18,596 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:18,598 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:08:18,598 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:18,599 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:08:18,599 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:18,600 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:08:18,600 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:18,600 INFO sqlalchemy.engine.base.Engine create table in14 character set utf8 collate utf8_unicode_ci(select * from test limit 13000000, 1000000);
+2017-11-07 12:08:18,601 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:08:43,455 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:08:43,456 INFO sqlalchemy.engine.base.Engine create table com14(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in14 group by word);
+2017-11-07 12:08:43,456 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:09:51,569 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:09:51,572 INFO sqlalchemy.engine.base.Engine insert into com14(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out12;
+2017-11-07 12:09:51,572 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:10:17,769 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:10:17,810 INFO sqlalchemy.engine.base.Engine create table out13(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com14 group by word);
+2017-11-07 12:10:17,810 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:12:58,670 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:12:58,690 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:12:58,690 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:12:58,783 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:12:58,783 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:12:58,786 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:12:58,786 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:12:58,787 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:12:58,787 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:12:58,788 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:12:58,788 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:12:58,789 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:12:58,789 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:12:58,789 INFO sqlalchemy.engine.base.Engine create table in15 character set utf8 collate utf8_unicode_ci(select * from test limit 14000000, 1000000);
+2017-11-07 12:12:58,789 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:13:24,674 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:13:24,674 INFO sqlalchemy.engine.base.Engine create table com15(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in15 group by word);
+2017-11-07 12:13:24,674 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:14:31,464 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:14:31,468 INFO sqlalchemy.engine.base.Engine insert into com15(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out13;
+2017-11-07 12:14:31,468 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:15:01,658 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:15:01,711 INFO sqlalchemy.engine.base.Engine create table out14(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com15 group by word);
+2017-11-07 12:15:01,711 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:17:56,802 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:17:56,811 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:17:56,812 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:17:56,817 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:17:56,817 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:17:56,819 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:17:56,820 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:17:56,821 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:17:56,821 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:17:56,821 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:17:56,822 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:17:56,822 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:17:56,822 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:17:56,823 INFO sqlalchemy.engine.base.Engine delete from out14 where char_length(word) > 2 and frequency = 1;
+2017-11-07 12:17:56,823 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:08,499 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:18:08,567 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:18:08,567 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:08,569 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:18:08,569 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:08,570 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:18:08,570 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:08,571 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:18:08,571 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:08,572 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:18:08,572 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:08,573 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:18:08,573 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:08,573 INFO sqlalchemy.engine.base.Engine create table in16 character set utf8 collate utf8_unicode_ci(select * from test limit 15000000, 1000000);
+2017-11-07 12:18:08,574 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:18:47,753 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:18:47,754 INFO sqlalchemy.engine.base.Engine create table com16(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in16 group by word);
+2017-11-07 12:18:47,754 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:19:54,032 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:19:54,038 INFO sqlalchemy.engine.base.Engine insert into com16(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out14;
+2017-11-07 12:19:54,038 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:20:21,250 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:20:21,382 INFO sqlalchemy.engine.base.Engine create table out15(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com16 group by word);
+2017-11-07 12:20:21,382 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:22:52,874 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:22:52,886 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:22:52,886 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:22:52,891 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:22:52,891 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:22:52,967 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:22:52,967 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:22:52,969 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:22:52,969 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:22:52,969 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:22:52,969 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:22:52,970 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:22:52,970 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:22:52,971 INFO sqlalchemy.engine.base.Engine create table in17 character set utf8 collate utf8_unicode_ci(select * from test limit 16000000, 1000000);
+2017-11-07 12:22:52,971 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:23:20,659 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:23:20,660 INFO sqlalchemy.engine.base.Engine create table com17(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in17 group by word);
+2017-11-07 12:23:20,660 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:24:25,612 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:24:25,615 INFO sqlalchemy.engine.base.Engine insert into com17(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out15;
+2017-11-07 12:24:25,615 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:24:57,139 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:24:57,265 INFO sqlalchemy.engine.base.Engine create table out16(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com17 group by word);
+2017-11-07 12:24:57,265 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:27:46,576 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:27:46,595 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:27:46,595 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:27:46,604 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:27:46,604 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:27:46,608 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:27:46,608 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:27:46,609 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:27:46,610 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:27:46,610 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:27:46,610 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:27:46,612 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:27:46,613 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:27:46,613 INFO sqlalchemy.engine.base.Engine create table in18 character set utf8 collate utf8_unicode_ci(select * from test limit 17000000, 1000000);
+2017-11-07 12:27:46,613 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:28:16,394 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:28:16,395 INFO sqlalchemy.engine.base.Engine create table com18(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in18 group by word);
+2017-11-07 12:28:16,395 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:29:22,502 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:29:22,504 INFO sqlalchemy.engine.base.Engine insert into com18(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out16;
+2017-11-07 12:29:22,504 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:29:57,246 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:29:57,362 INFO sqlalchemy.engine.base.Engine create table out17(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com18 group by word);
+2017-11-07 12:29:57,362 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:42,412 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:33:42,483 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:33:42,484 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:42,491 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:33:42,491 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:42,493 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:33:42,493 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:42,495 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:33:42,495 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:42,495 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:33:42,496 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:42,496 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:33:42,496 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:42,497 INFO sqlalchemy.engine.base.Engine delete from out17 where char_length(word) > 2 and frequency = 1;
+2017-11-07 12:33:42,497 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:55,877 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:33:55,997 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:33:55,997 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:55,999 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:33:56,000 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:56,000 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:33:56,001 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:56,002 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:33:56,002 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:56,003 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:33:56,003 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:56,003 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:33:56,003 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:33:56,004 INFO sqlalchemy.engine.base.Engine create table in19 character set utf8 collate utf8_unicode_ci(select * from test limit 18000000, 1000000);
+2017-11-07 12:33:56,004 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:35:13,246 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:35:13,250 INFO sqlalchemy.engine.base.Engine create table com19(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in19 group by word);
+2017-11-07 12:35:13,250 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:36:19,868 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:36:19,872 INFO sqlalchemy.engine.base.Engine insert into com19(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out17;
+2017-11-07 12:36:19,872 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:36:52,446 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:36:52,520 INFO sqlalchemy.engine.base.Engine create table out18(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com19 group by word);
+2017-11-07 12:36:52,520 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:39:35,761 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:39:35,776 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:39:35,776 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:39:35,781 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:39:35,781 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:39:35,783 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:39:35,783 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:39:35,784 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:39:35,784 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:39:35,785 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:39:35,785 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:39:35,786 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:39:35,786 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:39:35,787 INFO sqlalchemy.engine.base.Engine create table in20 character set utf8 collate utf8_unicode_ci(select * from test limit 19000000, 1000000);
+2017-11-07 12:39:35,787 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:40:06,275 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:40:06,276 INFO sqlalchemy.engine.base.Engine create table com20(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in20 group by word);
+2017-11-07 12:40:06,276 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:41:11,281 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:41:11,282 INFO sqlalchemy.engine.base.Engine insert into com20(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out18;
+2017-11-07 12:41:11,282 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:41:47,043 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:41:47,165 INFO sqlalchemy.engine.base.Engine create table out19(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com20 group by word);
+2017-11-07 12:41:47,166 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:45:38,470 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:45:38,473 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:45:38,474 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:45:38,479 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:45:38,479 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:45:38,480 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:45:38,480 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:45:38,482 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:45:38,482 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:45:38,483 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:45:38,483 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:45:38,484 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:45:38,484 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:45:38,485 INFO sqlalchemy.engine.base.Engine create table in21 character set utf8 collate utf8_unicode_ci(select * from test limit 20000000, 1000000);
+2017-11-07 12:45:38,485 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:46:11,055 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:46:11,056 INFO sqlalchemy.engine.base.Engine create table com21(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in21 group by word);
+2017-11-07 12:46:11,056 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:47:43,068 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:47:43,069 INFO sqlalchemy.engine.base.Engine insert into com21(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out19;
+2017-11-07 12:47:43,069 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:48:22,005 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:48:22,073 INFO sqlalchemy.engine.base.Engine create table out20(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com21 group by word);
+2017-11-07 12:48:22,073 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:35,517 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:52:35,616 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:52:35,616 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:35,627 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:52:35,627 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:35,630 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:52:35,630 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:35,632 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:52:35,632 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:35,633 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:52:35,633 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:35,634 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:52:35,634 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:35,635 INFO sqlalchemy.engine.base.Engine delete from out20 where char_length(word) > 2 and frequency = 1;
+2017-11-07 12:52:35,635 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:50,285 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:52:50,307 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:52:50,308 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:50,310 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:52:50,310 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:50,310 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:52:50,311 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:50,312 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:52:50,312 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:50,312 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:52:50,312 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:50,313 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:52:50,313 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:52:50,314 INFO sqlalchemy.engine.base.Engine create table in22 character set utf8 collate utf8_unicode_ci(select * from test limit 21000000, 1000000);
+2017-11-07 12:52:50,314 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:54:12,966 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:54:12,969 INFO sqlalchemy.engine.base.Engine create table com22(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in22 group by word);
+2017-11-07 12:54:12,969 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:55:22,912 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:55:22,912 INFO sqlalchemy.engine.base.Engine insert into com22(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out20;
+2017-11-07 12:55:22,913 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:56:00,656 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:56:00,887 INFO sqlalchemy.engine.base.Engine create table out21(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com22 group by word);
+2017-11-07 12:56:00,887 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:58:57,387 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:58:57,477 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 12:58:57,477 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:58:57,485 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 12:58:57,485 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:58:57,491 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 12:58:57,491 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:58:57,492 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:58:57,492 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:58:57,493 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 12:58:57,493 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:58:57,494 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 12:58:57,494 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:58:57,496 INFO sqlalchemy.engine.base.Engine create table in23 character set utf8 collate utf8_unicode_ci(select * from test limit 22000000, 1000000);
+2017-11-07 12:58:57,496 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 12:59:32,170 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 12:59:32,173 INFO sqlalchemy.engine.base.Engine create table com23(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in23 group by word);
+2017-11-07 12:59:32,173 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:00:36,197 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:00:36,198 INFO sqlalchemy.engine.base.Engine insert into com23(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out21;
+2017-11-07 13:00:36,198 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:01:16,754 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:01:16,884 INFO sqlalchemy.engine.base.Engine create table out22(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com23 group by word);
+2017-11-07 13:01:16,885 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:09,715 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:05:09,804 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:05:09,805 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:09,815 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:05:09,815 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:09,818 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:05:09,818 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:09,819 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:05:09,819 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:09,821 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:05:09,821 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:09,821 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:05:09,822 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:09,822 INFO sqlalchemy.engine.base.Engine create table in24 character set utf8 collate utf8_unicode_ci(select * from test limit 23000000, 1000000);
+2017-11-07 13:05:09,822 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:05:46,182 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:05:46,184 INFO sqlalchemy.engine.base.Engine create table com24(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in24 group by word);
+2017-11-07 13:05:46,184 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:06:51,368 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:06:51,369 INFO sqlalchemy.engine.base.Engine insert into com24(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out22;
+2017-11-07 13:06:51,369 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:07:35,532 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:07:35,582 INFO sqlalchemy.engine.base.Engine create table out23(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com24 group by word);
+2017-11-07 13:07:35,582 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:11:52,595 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:11:52,606 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:11:52,606 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:11:52,682 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:11:52,682 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:11:52,684 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:11:52,684 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:11:52,686 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:11:52,686 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:11:52,687 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:11:52,687 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:11:52,687 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:11:52,688 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:11:52,688 INFO sqlalchemy.engine.base.Engine delete from out23 where char_length(word) > 2 and frequency = 1;
+2017-11-07 13:11:52,688 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:12:08,351 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:12:08,376 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:12:08,376 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:12:08,378 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:12:08,378 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:12:08,379 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:12:08,379 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:12:08,380 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:12:08,380 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:12:08,381 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:12:08,381 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:12:08,382 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:12:08,382 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:12:08,382 INFO sqlalchemy.engine.base.Engine create table in25 character set utf8 collate utf8_unicode_ci(select * from test limit 24000000, 1000000);
+2017-11-07 13:12:08,382 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:13:40,362 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:13:40,364 INFO sqlalchemy.engine.base.Engine create table com25(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in25 group by word);
+2017-11-07 13:13:40,364 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:14:50,410 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:14:50,414 INFO sqlalchemy.engine.base.Engine insert into com25(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out23;
+2017-11-07 13:14:50,414 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:15:33,713 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:15:33,885 INFO sqlalchemy.engine.base.Engine create table out24(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com25 group by word);
+2017-11-07 13:15:33,885 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:12,373 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:19:12,413 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:19:12,413 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:12,419 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:19:12,419 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:12,421 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:19:12,421 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:12,423 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:19:12,423 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:12,423 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:19:12,423 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:12,424 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:19:12,424 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:12,425 INFO sqlalchemy.engine.base.Engine create table in26 character set utf8 collate utf8_unicode_ci(select * from test limit 25000000, 1000000);
+2017-11-07 13:19:12,425 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:19:50,152 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:19:50,156 INFO sqlalchemy.engine.base.Engine create table com26(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in26 group by word);
+2017-11-07 13:19:50,156 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:21:02,250 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:21:02,251 INFO sqlalchemy.engine.base.Engine insert into com26(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out24;
+2017-11-07 13:21:02,251 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:21:48,148 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:21:48,262 INFO sqlalchemy.engine.base.Engine create table out25(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com26 group by word);
+2017-11-07 13:21:48,262 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:26:22,362 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:26:22,466 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:26:22,466 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:26:22,474 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:26:22,474 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:26:22,479 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:26:22,479 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:26:22,481 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:26:22,481 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:26:22,482 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:26:22,482 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:26:22,485 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:26:22,485 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:26:22,486 INFO sqlalchemy.engine.base.Engine create table in27 character set utf8 collate utf8_unicode_ci(select * from test limit 26000000, 1000000);
+2017-11-07 13:26:22,486 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:27:02,154 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:27:02,156 INFO sqlalchemy.engine.base.Engine create table com27(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in27 group by word);
+2017-11-07 13:27:02,156 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:28:16,080 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:28:16,083 INFO sqlalchemy.engine.base.Engine insert into com27(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out25;
+2017-11-07 13:28:16,083 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:29:06,475 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:29:06,582 INFO sqlalchemy.engine.base.Engine create table out26(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com27 group by word);
+2017-11-07 13:29:06,582 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:00,474 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:34:00,663 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:34:00,663 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:00,675 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:34:00,675 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:00,678 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:34:00,678 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:00,679 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:34:00,679 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:00,680 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:34:00,680 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:00,681 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:34:00,681 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:00,681 INFO sqlalchemy.engine.base.Engine delete from out26 where char_length(word) > 2 and frequency = 1;
+2017-11-07 13:34:00,681 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:18,969 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:34:18,993 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:34:18,993 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:18,996 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:34:18,996 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:18,996 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:34:18,997 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:18,998 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:34:18,998 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:18,998 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:34:18,999 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:18,999 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:34:18,999 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:34:19,000 INFO sqlalchemy.engine.base.Engine create table in28 character set utf8 collate utf8_unicode_ci(select * from test limit 27000000, 1000000);
+2017-11-07 13:34:19,000 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:35:16,758 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:35:16,760 INFO sqlalchemy.engine.base.Engine create table com28(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in28 group by word);
+2017-11-07 13:35:16,760 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:36:27,732 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:36:27,735 INFO sqlalchemy.engine.base.Engine insert into com28(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out26;
+2017-11-07 13:36:27,735 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:37:16,539 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:37:16,549 INFO sqlalchemy.engine.base.Engine create table out27(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com28 group by word);
+2017-11-07 13:37:16,549 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:41:29,506 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:41:29,520 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:41:29,520 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:41:29,617 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:41:29,618 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:41:29,620 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:41:29,620 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:41:29,622 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:41:29,622 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:41:29,622 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:41:29,622 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:41:29,623 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:41:29,623 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:41:29,624 INFO sqlalchemy.engine.base.Engine create table in29 character set utf8 collate utf8_unicode_ci(select * from test limit 28000000, 1000000);
+2017-11-07 13:41:29,624 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:42:11,590 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:42:11,592 INFO sqlalchemy.engine.base.Engine create table com29(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in29 group by word);
+2017-11-07 13:42:11,592 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:43:34,328 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:43:34,330 INFO sqlalchemy.engine.base.Engine insert into com29(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out27;
+2017-11-07 13:43:34,330 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:44:25,450 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:44:25,584 INFO sqlalchemy.engine.base.Engine create table out28(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com29 group by word);
+2017-11-07 13:44:25,584 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:12,685 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:49:12,786 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:49:12,786 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:12,793 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:49:12,793 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:12,807 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:49:12,807 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:12,808 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:49:12,808 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:12,809 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:49:12,809 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:12,811 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:49:12,811 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:12,812 INFO sqlalchemy.engine.base.Engine create table in30 character set utf8 collate utf8_unicode_ci(select * from test limit 29000000, 1000000);
+2017-11-07 13:49:12,879 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:49:56,479 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:49:56,483 INFO sqlalchemy.engine.base.Engine create table com30(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in30 group by word);
+2017-11-07 13:49:56,483 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:51:08,031 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:51:08,033 INFO sqlalchemy.engine.base.Engine insert into com30(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out28;
+2017-11-07 13:51:08,033 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:52:03,425 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:52:03,471 INFO sqlalchemy.engine.base.Engine create table out29(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com30 group by word);
+2017-11-07 13:52:03,472 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:56:55,887 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:56:55,987 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:56:55,987 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:56:55,994 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:56:55,994 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:56:55,997 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:56:55,997 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:56:55,999 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:56:55,999 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:56:55,999 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:56:55,999 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:56:56,002 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:56:56,002 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:56:56,003 INFO sqlalchemy.engine.base.Engine delete from out29 where char_length(word) > 2 and frequency = 1;
+2017-11-07 13:56:56,003 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:57:14,741 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:57:14,794 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 13:57:14,794 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:57:14,796 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 13:57:14,796 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:57:14,797 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 13:57:14,797 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:57:14,799 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:57:14,799 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:57:14,799 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 13:57:14,800 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:57:14,800 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 13:57:14,800 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:57:14,803 INFO sqlalchemy.engine.base.Engine create table in31 character set utf8 collate utf8_unicode_ci(select * from test limit 30000000, 1000000);
+2017-11-07 13:57:14,803 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 13:59:01,803 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 13:59:01,805 INFO sqlalchemy.engine.base.Engine create table com31(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in31 group by word);
+2017-11-07 13:59:01,805 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:00:13,110 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:00:13,114 INFO sqlalchemy.engine.base.Engine insert into com31(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out29;
+2017-11-07 14:00:13,114 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:01:07,461 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:01:07,481 INFO sqlalchemy.engine.base.Engine create table out30(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com31 group by word);
+2017-11-07 14:01:07,481 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:05:40,904 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:05:41,005 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 14:05:41,005 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:05:41,011 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 14:05:41,011 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:05:41,015 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 14:05:41,015 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:05:41,016 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:05:41,016 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:05:41,017 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:05:41,017 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:05:41,018 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 14:05:41,018 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:05:41,022 INFO sqlalchemy.engine.base.Engine create table in32 character set utf8 collate utf8_unicode_ci(select * from test limit 31000000, 1000000);
+2017-11-07 14:05:41,022 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:06:27,776 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:06:27,779 INFO sqlalchemy.engine.base.Engine create table com32(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in32 group by word);
+2017-11-07 14:06:27,779 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:07:39,877 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:07:39,879 INFO sqlalchemy.engine.base.Engine insert into com32(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out30;
+2017-11-07 14:07:39,879 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:08:37,064 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:08:37,150 INFO sqlalchemy.engine.base.Engine create table out31(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com32 group by word);
+2017-11-07 14:08:37,150 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:13:14,381 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:13:14,480 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 14:13:14,480 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:13:14,487 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 14:13:14,487 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:13:14,490 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 14:13:14,490 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:13:14,492 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:13:14,492 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:13:14,492 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:13:14,492 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:13:14,493 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 14:13:14,493 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:13:14,493 INFO sqlalchemy.engine.base.Engine create table in33 character set utf8 collate utf8_unicode_ci(select * from test limit 32000000, 1000000);
+2017-11-07 14:13:14,494 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:14:10,505 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:14:10,506 INFO sqlalchemy.engine.base.Engine create table com33(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in33 group by word);
+2017-11-07 14:14:10,506 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:15:17,196 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:15:17,199 INFO sqlalchemy.engine.base.Engine insert into com33(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out31;
+2017-11-07 14:15:17,200 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:16:17,221 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:16:17,234 INFO sqlalchemy.engine.base.Engine create table out32(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com33 group by word);
+2017-11-07 14:16:17,234 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:21:40,173 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:21:40,277 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 14:21:40,277 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:21:40,378 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 14:21:40,378 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:21:40,381 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 14:21:40,381 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:21:40,384 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:21:40,384 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:21:40,385 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:21:40,385 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:21:40,386 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 14:21:40,386 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:21:40,387 INFO sqlalchemy.engine.base.Engine delete from out32 where char_length(word) > 2 and frequency = 1;
+2017-11-07 14:21:40,387 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:22:00,238 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:22:00,332 INFO sqlalchemy.engine.base.Engine SHOW VARIABLES LIKE 'sql_mode'
+2017-11-07 14:22:00,332 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:22:00,334 INFO sqlalchemy.engine.base.Engine SELECT DATABASE()
+2017-11-07 14:22:00,334 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:22:00,335 INFO sqlalchemy.engine.base.Engine show collation where `Charset` = 'utf8' and `Collation` = 'utf8_bin'
+2017-11-07 14:22:00,335 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:22:00,336 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:22:00,337 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:22:00,337 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS CHAR(60)) AS anon_1
+2017-11-07 14:22:00,337 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:22:00,338 INFO sqlalchemy.engine.base.Engine SELECT CAST('test collated returns' AS CHAR CHARACTER SET utf8) COLLATE utf8_bin AS anon_1
+2017-11-07 14:22:00,338 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:22:00,338 INFO sqlalchemy.engine.base.Engine create table in34 character set utf8 collate utf8_unicode_ci(select * from test limit 33000000, 1000000);
+2017-11-07 14:22:00,338 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:23:54,530 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:23:54,531 INFO sqlalchemy.engine.base.Engine create table com34(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in34 group by word);
+2017-11-07 14:23:54,532 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:25:06,123 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:25:06,126 INFO sqlalchemy.engine.base.Engine insert into com34(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out32;
+2017-11-07 14:25:06,126 INFO sqlalchemy.engine.base.Engine {}
+2017-11-07 14:26:09,795 INFO sqlalchemy.engine.base.Engine COMMIT
+2017-11-07 14:26:10,153 INFO sqlalchemy.engine.base.Engine create table out33(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com34 group by word);
+2017-11-07 14:26:10,153 INFO sqlalchemy.engine.base.Engine {}
