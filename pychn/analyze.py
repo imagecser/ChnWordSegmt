@@ -19,6 +19,14 @@ PARAS = {
 }
 
 
+def is_chinese(uchar):
+        """判断一个 unicode 是否是汉字"""
+        if uchar >= u'\u4e00' and uchar<=u'\u9fa5':
+                return True
+        else:
+                return False
+
+
 def remove_symbol(source):
     """
     remove invalid character
@@ -26,14 +34,12 @@ def remove_symbol(source):
     :returns: 格式化后的源文件内容
     """
     dest = ""
-    invalid_character = "\t\r\n，。：；|=+-—－（）*&……%￥#@！~·《》、？/?<>,.;:_)(^$!` \
-                    abcсdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
     removed_character = "“‘”【】『』'\"[]{}"
     for char in source:
-        if char in invalid_character:
-            char = ' '
-        elif char in removed_character:
+        if char in removed_character:
             char = ''
+        elif not is_chinese(char):
+            char = ' '
         dest += char
     return dest
 
