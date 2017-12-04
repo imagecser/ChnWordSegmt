@@ -1,6 +1,6 @@
 """
 created on 11/1/2017
-
+从result.json南大网页数据转为files/文件
 """
 # coding: utf-8
 import json

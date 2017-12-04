@@ -16,15 +16,6 @@ PARAS = {
 }
 
 
-class Word(declarative_base()):
-    __tablename__ = PARAS['table']
-    index = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    word = sqlalchemy.Column(sqlalchemy.String, default="")
-    frequency = sqlalchemy.Column(sqlalchemy.BIGINT, default="")
-    prefix = sqlalchemy.Column(sqlalchemy.String, default="")
-    suffix = sqlalchemy.Column(sqlalchemy.String, default="")
-
-
 def write_sql(maps):
     """
     将统计字典写入mysql

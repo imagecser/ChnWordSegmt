@@ -1,6 +1,6 @@
 """
 created on 11/2/2017
-
+由json转出的files文件夹转为sql
 """
 # coding: utf-8
 from pipe_sql import *
