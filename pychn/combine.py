@@ -7,6 +7,7 @@
 # coding: utf-8
 import sqlalchemy
 
+
 def update(i):
     """
     合并两个数据表
@@ -14,13 +15,27 @@ def update(i):
     :output outi数据表
     """
     i = int(i)
-    engine = sqlalchemy.create_engine("mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
-    engine.execute("create table in" + str(i) + " character set utf8 collate utf8_unicode_ci(select * from test limit " + str(i - 1) + "000000, 1000000);");
-    engine.execute("create table com" + str(i) + "(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from in"  + str(i) + " group by word);")
-    engine.execute("insert into com" + str(i) + "(word, frequency, prefix, suffix) select word, frequency, prefix, suffix from out" + str(i -1) + ";")
-    engine.execute("create table out" + str(i) + "(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix from com" + str(i) + " group by word);")
-    engine.execute("drop table in" + str(i) + ", com" + str(i) + ", out" + str(i - 1))
-
+    engine = sqlalchemy.create_engine(
+        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
+    engine.execute(
+        "create table in" + str(i) +
+        " character set utf8 collate utf8_unicode_ci(select * from test limit "
+        + str(i - 1) + "000000, 1000000);")
+    engine.execute(
+        "create table com" + str(i) +
+        "(select word, sum(frequency) as frequency, group_concat(prefix, ',') "
+        "as prefix, group_concat(suffix, ',') as suffix, sum(idf) as idf from in"
+        + str(i) + " group by word);")
+    engine.execute(
+        "insert into com" + str(i) +
+        "(word, frequency, prefix, suffix, idf) select word, frequency, prefix, suffix, idf from out"
+        + str(i - 1) + ";")
+    engine.execute(
+        "create table out" + str(i) +
+        "(select word, sum(frequency) as frequency, group_concat(prefix, ',') as prefix, group_concat(suffix, ',') as suffix, sum(idf) as idf from com"
+        + str(i) + " group by word);")
+    engine.execute(
+        "drop table in" + str(i) + ", com" + str(i) + ", out" + str(i - 1))
 
 
 def clean(i):
@@ -28,10 +43,13 @@ def clean(i):
     清除频率为1的词
     """
     i = int(i)
-    engine = sqlalchemy.create_engine("mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
-    engine.execute("delete from out" + str(i) + " where char_length(word) > 2 and frequency = 1;");
+    engine = sqlalchemy.create_engine(
+        "mysql+pymysql://root:root@localhost/chn?charset=utf8", echo=True)
+    engine.execute("delete from out" + str(i) +
+                   " where char_length(word) > 2 and frequency = 1;")
 
-for i in range(48, 51):
+
+for i in range(22, 51):
     """
     将数据表分段合并，每3次update进行一次clean
     """

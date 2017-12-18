@@ -32,15 +32,17 @@ def write_sql(maps):
                     word text not null, \
                     frequency bigint not null, \
                     prefix text not null, \
-                    suffix text not null) character set utf8; \
+                    suffix text not null, \
+                    idf int not null) character set utf8; \
                    ")
     # engine.execute("TRUNCATE TABLE " + PARAS['table'] + ";")
     result_word = [item[0] for item in maps.items()]
     result_frequency = [value[0] for key, value in maps.items()]
     result_prefix = [','.join(value[4]) for key, value in maps.items()]
     result_suffix = [','.join(value[5]) for key, value in maps.items()]
+    result_idf = [1] * len(maps)
     dataframe = pd.DataFrame({'word': result_word, 'frequency': result_frequency,
-                              'prefix': result_prefix, 'suffix': result_suffix})
+                              'prefix': result_prefix, 'suffix': result_suffix, 'idf': result_idf})
     dataframe.to_sql(PARAS['table'], engine, if_exists='append', index=False)
 
 
